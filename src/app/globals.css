@@ -1,0 +1,140 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  html {
+    scroll-behavior: smooth;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+  }
+
+  body {
+    background-color: #131313;
+    color: #e5e2e1;
+    font-family: "Avenir Next", "Segoe UI", system-ui, -apple-system, sans-serif;
+    background-image:
+      radial-gradient(circle at top left, rgba(87, 217, 255, 0.1), transparent 24%),
+      radial-gradient(circle at top right, rgba(131, 92, 255, 0.09), transparent 22%),
+      linear-gradient(180deg, #101112 0%, #131313 30%, #101112 100%);
+    background-attachment: fixed;
+  }
+
+  body::before {
+    content: "";
+    position: fixed;
+    inset: 0;
+    pointer-events: none;
+    background:
+      linear-gradient(rgba(255, 255, 255, 0.015) 1px, transparent 1px),
+      linear-gradient(90deg, rgba(255, 255, 255, 0.015) 1px, transparent 1px);
+    background-size: 72px 72px;
+    mask-image: radial-gradient(circle at center, black, transparent 88%);
+    opacity: 0.38;
+    z-index: -1;
+  }
+
+  /* Custom scrollbar */
+  ::-webkit-scrollbar {
+    width: 4px;
+  }
+  ::-webkit-scrollbar-track {
+    background: #0e0e0e;
+  }
+  ::-webkit-scrollbar-thumb {
+    background: #353534;
+    border-radius: 2px;
+  }
+  ::-webkit-scrollbar-thumb:hover {
+    background: #47d6ff;
+  }
+}
+
+@layer components {
+  /* Bento grid */
+  .bento-grid {
+    display: grid;
+    grid-template-columns: repeat(12, 1fr);
+    gap: 1.5rem;
+  }
+
+  /* Glass card */
+  .glass-card {
+    background: rgba(28, 27, 27, 0.6);
+    backdrop-filter: blur(20px);
+    -webkit-backdrop-filter: blur(20px);
+  }
+
+  /* Gradient text */
+  .gradient-text {
+    background: linear-gradient(135deg, #a5e7ff 0%, #00d2ff 100%);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+  }
+
+  /* Section base */
+  .section-base {
+    @apply py-24 px-4 sm:px-6 lg:px-8 max-w-6xl mx-auto;
+  }
+
+  /* Primary button */
+  .btn-primary {
+    @apply inline-flex items-center gap-2 px-5 py-2.5 rounded-full text-on-primary-fixed font-headline font-semibold text-sm tracking-tight transition-all duration-200;
+    background: linear-gradient(135deg, #92ecff 0%, #29d3ff 50%, #7f7cff 100%);
+  }
+  .btn-primary:hover {
+    box-shadow: 0 0 30px rgba(41, 211, 255, 0.26);
+    transform: translateY(-2px);
+  }
+
+  /* Tertiary ghost button */
+  .btn-ghost {
+    @apply inline-flex items-center gap-2 px-5 py-2.5 rounded-full border border-white/10 text-primary font-headline font-semibold text-sm tracking-tight transition-all duration-200 bg-white/[0.02];
+  }
+  .btn-ghost:hover {
+    @apply bg-surface-container-high;
+  }
+
+  /* Badge */
+  .badge {
+    @apply inline-flex items-center px-2.5 py-0.5 rounded-sm text-xs font-label font-medium bg-surface-container-high text-on-surface-variant;
+  }
+
+  /* Surface card */
+  .surface-card {
+    @apply bg-surface-container-low rounded-xl;
+  }
+
+  /* Inner glow top border */
+  .inner-glow {
+    box-shadow: inset 0 1px 0 rgba(165, 231, 255, 0.12);
+  }
+
+  .marquee-track {
+    animation: marquee-slide 22s linear infinite;
+  }
+}
+
+@layer utilities {
+  .text-balance {
+    text-wrap: balance;
+  }
+
+  /* Stagger animation delays */
+  .stagger-1 { animation-delay: 0.05s; }
+  .stagger-2 { animation-delay: 0.10s; }
+  .stagger-3 { animation-delay: 0.15s; }
+  .stagger-4 { animation-delay: 0.20s; }
+  .stagger-5 { animation-delay: 0.25s; }
+  .stagger-6 { animation-delay: 0.30s; }
+}
+
+@keyframes marquee-slide {
+  0% {
+    transform: translateX(0);
+  }
+  100% {
+    transform: translateX(-50%);
+  }
+}
