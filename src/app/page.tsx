@@ -22,6 +22,7 @@ import Projects from "@/components/Projects";
 import Testimonials from "@/components/Testimonials";
 import Contact from "@/components/Contact";
 import Footer from "@/components/Footer";
+import SectionDivider from "@/components/SectionDivider";
 
 export default async function Home() {
   const [me, socials, contacts, nav, experience, skills, services, projects, testimonials] =
@@ -58,47 +59,25 @@ export default async function Home() {
             "Incident Response",
           ]}
         />
-
-        {/* Divider */}
-        <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="h-px bg-gradient-to-r from-transparent via-outline-variant/30 to-transparent" />
-        </div>
+        <SectionDivider />
 
         <About me={me} contacts={contacts} experience={experience} />
-
-        <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="h-px bg-gradient-to-r from-transparent via-outline-variant/30 to-transparent" />
-        </div>
+        <SectionDivider />
 
         <ExperienceSection experiences={experience} />
-
-        <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="h-px bg-gradient-to-r from-transparent via-outline-variant/30 to-transparent" />
-        </div>
+        <SectionDivider />
 
         <Skills skills={skills} />
-
-        <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="h-px bg-gradient-to-r from-transparent via-outline-variant/30 to-transparent" />
-        </div>
+        <SectionDivider />
 
         <Services services={services} />
-
-        <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="h-px bg-gradient-to-r from-transparent via-outline-variant/30 to-transparent" />
-        </div>
+        <SectionDivider />
 
         <Projects projects={projects} />
-
-        <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="h-px bg-gradient-to-r from-transparent via-outline-variant/30 to-transparent" />
-        </div>
+        <SectionDivider />
 
         <Testimonials testimonials={testimonials} />
-
-        <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="h-px bg-gradient-to-r from-transparent via-outline-variant/30 to-transparent" />
-        </div>
+        <SectionDivider />
 
         <Contact contacts={contacts} me={me} socials={socials} />
       </main>

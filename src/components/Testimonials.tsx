@@ -4,6 +4,7 @@ import { useEffect, useMemo, useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import type { Testimonial } from "@/types";
 import SectionHeader from "./SectionHeader";
+import InteractiveCard from "./InteractiveCard";
 
 interface TestimonialsProps {
   testimonials: Testimonial[];
@@ -68,7 +69,7 @@ function Avatar({
 
 function TestimonialCard({ testimonial }: { testimonial: Testimonial }) {
   return (
-    <div className="bg-surface-container-low rounded-2xl p-6 inner-glow h-full flex flex-col gap-4">
+    <InteractiveCard className="bg-surface-container-low rounded-2xl p-6 inner-glow h-full flex flex-col gap-4">
       {/* Quote mark */}
       <div className="text-primary/30 font-headline text-5xl leading-none font-bold select-none">
         &ldquo;
@@ -102,7 +103,7 @@ function TestimonialCard({ testimonial }: { testimonial: Testimonial }) {
           </p>
         </div>
       </div>
-    </div>
+    </InteractiveCard>
   );
 }
 
@@ -184,7 +185,7 @@ export default function Testimonials({ testimonials }: TestimonialsProps) {
             whileHover={{ y: -6, scale: 1.01 }}
             className="cursor-pointer"
           >
-            <div
+            <InteractiveCard
               className={`bg-surface-container-low rounded-2xl p-5 inner-glow min-h-[250px] transition-all duration-200 hover:bg-surface-container ${idx === activeIdx ? "ring-1 ring-primary/30 shadow-glow" : ""
                 }`}
             >
@@ -208,7 +209,7 @@ export default function Testimonials({ testimonials }: TestimonialsProps) {
               <p className="font-body text-xs text-on-surface-variant leading-relaxed whitespace-pre-line line-clamp-6">
                 {t.text}
               </p>
-            </div>
+            </InteractiveCard>
           </motion.div>
         ))}
       </div>

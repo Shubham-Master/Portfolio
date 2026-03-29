@@ -114,6 +114,10 @@
   .marquee-track {
     animation: marquee-slide 22s linear infinite;
   }
+
+  .hero-sheen {
+    animation: hero-sheen-shift 10s ease-in-out infinite;
+  }
 }
 
 @layer utilities {
@@ -137,4 +141,35 @@
   100% {
     transform: translateX(-50%);
   }
+}
+
+@keyframes divider-beam {
+  0% {
+    transform: translate(-10%, -50%);
+    opacity: 0;
+  }
+  15% {
+    opacity: 1;
+  }
+  85% {
+    opacity: 1;
+  }
+  100% {
+    transform: translate(95vw, -50%);
+    opacity: 0;
+  }
+}
+
+@keyframes hero-sheen-shift {
+  0%,
+  100% {
+    transform: translate3d(-8%, -2%, 0) scale(1);
+  }
+  50% {
+    transform: translate3d(6%, 3%, 0) scale(1.04);
+  }
+}
+
+.animate-divider-beam {
+  animation: divider-beam 6.5s ease-in-out infinite;
 }

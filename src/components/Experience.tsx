@@ -2,6 +2,7 @@ import type { Experience } from "@/types";
 import SectionHeader from "./SectionHeader";
 import { StaggerContainer, StaggerItem } from "./AnimateOnScroll";
 import { UTMLink } from "./UTMLink";
+import InteractiveCard from "./InteractiveCard";
 
 interface ExperienceProps {
   experiences: Experience[];
@@ -54,7 +55,7 @@ export default function ExperienceSection({ experiences }: ExperienceProps) {
               </div>
 
               {/* Card */}
-              <div className="relative mb-4 flex-1 overflow-hidden rounded-[26px] border border-white/7 bg-surface-container-low/90 p-6 inner-glow transition-all duration-300 hover:-translate-y-0.5 hover:border-primary/20 hover:bg-surface-container hover:shadow-[0_24px_64px_rgba(0,0,0,0.22)]">
+              <InteractiveCard className="relative mb-4 flex-1 rounded-[26px] border border-white/7 bg-surface-container-low/90 p-6 inner-glow transition-all duration-300 hover:border-primary/20 hover:bg-surface-container hover:shadow-[0_24px_64px_rgba(0,0,0,0.22)]">
                 <div className="absolute inset-x-0 top-0 h-px bg-gradient-to-r from-transparent via-primary/45 to-transparent opacity-60" />
                 <div className="flex flex-col sm:flex-row sm:items-start sm:justify-between gap-3 mb-4">
                   <div>
@@ -118,7 +119,7 @@ export default function ExperienceSection({ experiences }: ExperienceProps) {
                     </li>
                   ))}
                 </ul>
-              </div>
+              </InteractiveCard>
             </div>
           </StaggerItem>
         ))}

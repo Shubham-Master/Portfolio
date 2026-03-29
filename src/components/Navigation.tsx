@@ -3,6 +3,7 @@
 import { useState, useEffect } from "react";
 import Link from "next/link";
 import { Icon } from "@iconify/react";
+import { AnimatePresence, motion } from "framer-motion";
 import type { Me, Nav } from "@/types";
 import CTA from "./CTA";
 import { UTMLink } from "./UTMLink";
@@ -35,16 +36,24 @@ export default function Navigation({ me, nav }: NavigationProps) {
   return (
     <>
       {/* Desktop nav — pill */}
-      <nav
+      <motion.nav
+        initial={{ opacity: 0, y: -20 }}
+        animate={{ opacity: 1, y: 0 }}
+        transition={{ duration: 0.55, ease: [0.22, 1, 0.36, 1] }}
         className={`fixed top-0 left-0 right-0 z-50 transition-all duration-300 ${scrolled ? "pt-3" : "pt-5"
           }`}
       >
-        <div
+        <motion.div
           className={`mx-auto max-w-fit px-6 py-2.5 rounded-full flex items-center gap-6 font-headline font-semibold tracking-tighter text-sm transition-all duration-300 ${scrolled
             ? "bg-surface-container-low/80 backdrop-blur-xl shadow-glow"
             : "bg-surface/60 backdrop-blur-xl"
             }`}
-          style={{ boxShadow: "0 0 48px rgba(71,214,255,0.06)" }}
+          animate={{
+            scale: scrolled ? 0.985 : 1,
+            y: scrolled ? -1 : 0,
+          }}
+          transition={{ type: "spring", stiffness: 220, damping: 20 }}
+          style={{ boxShadow: "0 0 48px rgba(240,164,93,0.08)" }}
         >
           {/* Brand */}
           <Link
@@ -60,7 +69,7 @@ export default function Navigation({ me, nav }: NavigationProps) {
               <a
                 key={link.href}
                 href={link.href}
-                className="text-on-surface-variant hover:text-on-surface transition-colors text-xs font-medium"
+                className="relative text-on-surface-variant hover:text-on-surface transition-colors text-xs font-medium after:absolute after:left-0 after:-bottom-1 after:h-px after:w-full after:origin-left after:scale-x-0 after:bg-primary after:transition-transform after:duration-300 hover:after:scale-x-100"
               >
                 {link.label}
               </a>
@@ -89,41 +98,59 @@ export default function Navigation({ me, nav }: NavigationProps) {
             onClick={() => setMobileOpen(!mobileOpen)}
             aria-label="Toggle menu"
           >
-            <Icon icon={mobileOpen ? "ion:close" : "ion:menu"} width={20} />
+            <motion.span
+              animate={{ rotate: mobileOpen ? 90 : 0, scale: mobileOpen ? 1.05 : 1 }}
+              transition={{ type: "spring", stiffness: 260, damping: 20 }}
+              className="block"
+            >
+              <Icon icon={mobileOpen ? "ion:close" : "ion:menu"} width={20} />
+            </motion.span>
           </button>
-        </div>
+        </motion.div>
 
         {/* Mobile menu */}
-        {mobileOpen && (
-          <div className="lg:hidden mt-2 mx-4 rounded-xl bg-surface-container-low/95 backdrop-blur-xl p-4 shadow-glow-md">
-            <div className="flex flex-col gap-1">
-              {NAV_LINKS.map((link) => (
-                <a
-                  key={link.href}
-                  href={link.href}
-                  onClick={() => setMobileOpen(false)}
-                  className="px-4 py-2.5 rounded-md text-on-surface-variant hover:text-on-surface hover:bg-surface-container transition-all text-sm font-medium"
-                >
-                  {link.label}
-                </a>
-              ))}
-              <div className="border-t border-outline-variant/20 mt-2 pt-3 flex gap-2">
-                <a
-                  href={nav.resume}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="btn-ghost text-xs flex-1 justify-center"
-                >
-                  View CV
-                </a>
-                <CTA btn={nav.cal} className="btn-primary text-xs flex-1 justify-center">
-                  Book a call
-                </CTA>
+        <AnimatePresence>
+          {mobileOpen && (
+            <motion.div
+              initial={{ opacity: 0, y: -10, scale: 0.98, filter: "blur(8px)" }}
+              animate={{ opacity: 1, y: 0, scale: 1, filter: "blur(0px)" }}
+              exit={{ opacity: 0, y: -10, scale: 0.98, filter: "blur(8px)" }}
+              transition={{ duration: 0.26, ease: [0.22, 1, 0.36, 1] }}
+              className="lg:hidden mt-2 mx-4 rounded-xl bg-surface-container-low/95 backdrop-blur-xl p-4 shadow-glow-md"
+            >
+              <div className="flex flex-col gap-1">
+                {NAV_LINKS.map((link, idx) => (
+                  <motion.a
+                    key={link.href}
+                    href={link.href}
+                    onClick={() => setMobileOpen(false)}
+                    initial={{ opacity: 0, x: -10 }}
+                    animate={{ opacity: 1, x: 0 }}
+                    exit={{ opacity: 0, x: -10 }}
+                    transition={{ duration: 0.2, delay: idx * 0.03 }}
+                    className="px-4 py-2.5 rounded-md text-on-surface-variant hover:text-on-surface hover:bg-surface-container transition-all text-sm font-medium"
+                  >
+                    {link.label}
+                  </motion.a>
+                ))}
+                <div className="border-t border-outline-variant/20 mt-2 pt-3 flex gap-2">
+                  <a
+                    href={nav.resume}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="btn-ghost text-xs flex-1 justify-center"
+                  >
+                    View CV
+                  </a>
+                  <CTA btn={nav.cal} className="btn-primary text-xs flex-1 justify-center">
+                    Book a call
+                  </CTA>
+                </div>
               </div>
-            </div>
-          </div>
-        )}
-      </nav>
+            </motion.div>
+          )}
+        </AnimatePresence>
+      </motion.nav>
     </>
   );
 }

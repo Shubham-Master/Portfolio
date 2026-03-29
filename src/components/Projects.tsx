@@ -2,6 +2,7 @@ import { Icon } from "@iconify/react";
 import type { Project } from "@/types";
 import SectionHeader from "./SectionHeader";
 import { StaggerContainer, StaggerItem } from "./AnimateOnScroll";
+import InteractiveCard from "./InteractiveCard";
 
 interface ProjectsProps {
   projects: Project[];
@@ -19,12 +20,14 @@ export default function Projects({ projects }: ProjectsProps) {
       <StaggerContainer className="grid grid-cols-1 lg:grid-cols-2 gap-6">
         {projects.map((project, idx) => (
           <StaggerItem key={project.title}>
-            <a
-              href={project.link}
-              target="_blank"
-              rel="noopener noreferrer"
-              className="group relative block h-full overflow-hidden rounded-[26px] border border-white/7 bg-surface-container-low/90 p-7 inner-glow transition-all duration-300 hover:-translate-y-1 hover:border-primary/20 hover:bg-surface-container hover:shadow-[0_22px_48px_rgba(0,0,0,0.24)]"
-            >
+            <InteractiveCard className="rounded-[26px] border border-white/7 bg-surface-container-low/90 p-7 inner-glow transition-all duration-300 hover:border-primary/20 hover:bg-surface-container hover:shadow-[0_22px_48px_rgba(0,0,0,0.24)]">
+              <a
+                href={project.link}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="group relative block h-full"
+              >
+              <div className="pointer-events-none absolute inset-0 opacity-0 transition-opacity duration-300 group-hover:opacity-100 bg-[radial-gradient(300px_circle_at_20%_20%,rgba(242,179,110,0.14),transparent_60%)]" />
               <div className="absolute -right-5 -top-7 font-headline text-[90px] font-bold tracking-tighter text-white/[0.04] transition-transform duration-300 group-hover:translate-x-[-6px] group-hover:translate-y-[6px]">
                 0{idx + 1}
               </div>
@@ -57,7 +60,8 @@ export default function Projects({ projects }: ProjectsProps) {
                   </span>
                 ))}
               </div>
-            </a>
+              </a>
+            </InteractiveCard>
           </StaggerItem>
         ))}
       </StaggerContainer>

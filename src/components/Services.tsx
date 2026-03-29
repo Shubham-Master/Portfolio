@@ -2,6 +2,7 @@ import { Icon } from "@iconify/react";
 import type { Service } from "@/types";
 import SectionHeader from "./SectionHeader";
 import { StaggerContainer, StaggerItem } from "./AnimateOnScroll";
+import InteractiveCard from "./InteractiveCard";
 
 interface ServicesProps {
   services: Service[];
@@ -32,7 +33,7 @@ export default function Services({ services }: ServicesProps) {
       <StaggerContainer className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
         {services.map((service, idx) => (
           <StaggerItem key={service.title}>
-            <div className="group relative h-full overflow-hidden rounded-[24px] border border-white/7 bg-surface-container-low/90 p-7 inner-glow transition-all duration-300 hover:-translate-y-1 hover:border-primary/20 hover:bg-surface-container hover:shadow-[0_22px_48px_rgba(0,0,0,0.24)]">
+            <InteractiveCard className="h-full rounded-[24px] border border-white/7 bg-surface-container-low/90 p-7 inner-glow transition-all duration-300 hover:border-primary/20 hover:bg-surface-container hover:shadow-[0_22px_48px_rgba(0,0,0,0.24)]">
               <div
                 className={`absolute inset-0 rounded-[24px] bg-gradient-to-br ${SERVICE_ICONS[idx % SERVICE_ICONS.length]} opacity-0 transition-opacity duration-300 group-hover:opacity-100`}
               />
@@ -55,7 +56,7 @@ export default function Services({ services }: ServicesProps) {
                   {service.description}
                 </p>
               </div>
-            </div>
+            </InteractiveCard>
           </StaggerItem>
         ))}
       </StaggerContainer>

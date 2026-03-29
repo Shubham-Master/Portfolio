@@ -7,6 +7,7 @@ import type { Me, Social, Nav, Experience } from "@/types";
 import shubhamPhoto from "@/images/shubham-photo.jpeg";
 import { UTMLink } from "./UTMLink";
 import CTA from "./CTA";
+import InteractiveCard from "./InteractiveCard";
 
 interface HeroProps {
   me: Me;
@@ -44,6 +45,12 @@ const FLOATING_LABELS = [
   { label: "AWS", className: "-left-6 top-14 hidden lg:flex", duration: 6.5 },
   { label: "Terraform", className: "-right-8 top-1/3 hidden lg:flex", duration: 7.2 },
   { label: "Observability", className: "left-12 -bottom-5 hidden lg:flex", duration: 6.8 },
+];
+
+const MICRO_PROOFS = [
+  "Remote-friendly",
+  "Platform-first mindset",
+  "Built for production",
 ];
 
 export default function Hero({ me, socials, nav, experience }: HeroProps) {
@@ -87,10 +94,14 @@ export default function Hero({ me, socials, nav, experience }: HeroProps) {
                 {me.location}
                 <Icon icon="ion:chevron-forward" width={12} />
               </a>
-              <span className="inline-flex items-center gap-2 rounded-full border border-primary/20 bg-primary/10 px-3 py-1.5 text-xs font-label text-primary">
+              <motion.span
+                animate={{ boxShadow: ["0 0 0 rgba(224,137,61,0)", "0 0 18px rgba(224,137,61,0.2)", "0 0 0 rgba(224,137,61,0)"] }}
+                transition={{ duration: 3.4, repeat: Infinity, ease: "easeInOut" }}
+                className="inline-flex items-center gap-2 rounded-full border border-primary/20 bg-primary/10 px-3 py-1.5 text-xs font-label text-primary"
+              >
                 <span className="h-2 w-2 rounded-full bg-primary-container" />
                 Currently at SingleStore
-              </span>
+              </motion.span>
             </motion.div>
 
             <motion.div
@@ -102,12 +113,22 @@ export default function Hero({ me, socials, nav, experience }: HeroProps) {
                 Cloud, platform and reliability engineering
               </p>
               <h1 className="font-headline font-bold tracking-tighter leading-[0.9]">
-                <span className="block text-5xl sm:text-6xl xl:text-7xl text-on-surface">
+                <motion.span
+                  className="block text-5xl sm:text-6xl xl:text-7xl text-on-surface"
+                  initial={{ opacity: 0, y: 28, filter: "blur(12px)" }}
+                  animate={{ opacity: 1, y: 0, filter: "blur(0px)" }}
+                  transition={{ duration: 0.7, delay: 0.22, ease: [0.22, 1, 0.36, 1] }}
+                >
                   {me.name.split(" ")[0]}
-                </span>
-                <span className="block text-5xl sm:text-6xl xl:text-7xl gradient-text">
+                </motion.span>
+                <motion.span
+                  className="block text-5xl sm:text-6xl xl:text-7xl gradient-text"
+                  initial={{ opacity: 0, y: 32, filter: "blur(14px)" }}
+                  animate={{ opacity: 1, y: 0, filter: "blur(0px)" }}
+                  transition={{ duration: 0.82, delay: 0.32, ease: [0.22, 1, 0.36, 1] }}
+                >
                   {me.name.split(" ").slice(1).join(" ")}
-                </span>
+                </motion.span>
               </h1>
             </motion.div>
 
@@ -176,12 +197,33 @@ export default function Hero({ me, socials, nav, experience }: HeroProps) {
               className="flex flex-wrap gap-2 pt-2"
             >
               {HIGHLIGHTS.map((item) => (
-                <span
+                <motion.span
                   key={item}
+                  whileHover={{ y: -3, scale: 1.01 }}
                   className="rounded-full border border-white/8 bg-white/[0.03] px-4 py-2 text-xs font-label uppercase tracking-[0.18em] text-on-surface-variant"
                 >
                   {item}
-                </span>
+                </motion.span>
+              ))}
+            </motion.div>
+
+            <motion.div
+              initial={{ opacity: 0, y: 16 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.5, delay: 0.82 }}
+              className="flex flex-wrap items-center gap-2 pt-1"
+            >
+              {MICRO_PROOFS.map((item, idx) => (
+                <motion.span
+                  key={item}
+                  initial={{ opacity: 0, y: 10 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  transition={{ duration: 0.35, delay: 0.88 + idx * 0.06 }}
+                  className="inline-flex items-center gap-2 rounded-full bg-surface-container-low/70 px-3 py-1.5 text-[11px] font-label uppercase tracking-[0.16em] text-on-surface-variant"
+                >
+                  <span className="h-1.5 w-1.5 rounded-full bg-primary/70" />
+                  {item}
+                </motion.span>
               ))}
             </motion.div>
           </div>
@@ -194,7 +236,7 @@ export default function Hero({ me, socials, nav, experience }: HeroProps) {
           >
             <div className="relative w-full max-w-[460px]">
               <div
-                className="absolute -inset-6 rounded-[40px] opacity-40 blur-3xl"
+                className="hero-sheen absolute -inset-6 rounded-[40px] opacity-40 blur-3xl"
                 style={{
                   background: "linear-gradient(135deg, rgba(242,179,110,0.34), rgba(184,92,46,0.24))",
                 }}
@@ -205,19 +247,33 @@ export default function Hero({ me, socials, nav, experience }: HeroProps) {
                 transition={{ duration: 24, repeat: Infinity, ease: "linear" }}
               />
               <div className="absolute inset-6 rounded-[36px] border border-primary/20" />
+              <motion.div
+                className="absolute inset-2 rounded-[40px] border border-white/[0.05]"
+                animate={{ rotate: 360 }}
+                transition={{ duration: 40, repeat: Infinity, ease: "linear" }}
+                style={{
+                  clipPath: "polygon(0 0, 100% 0, 100% 12%, 0 42%)",
+                }}
+              />
               <div className="relative overflow-hidden rounded-[36px] border border-white/10 bg-[#16110f] p-4 shadow-[0_32px_80px_rgba(0,0,0,0.32)]">
                 <div className="absolute inset-0 bg-[radial-gradient(circle_at_top_right,rgba(242,179,110,0.18),transparent_32%),radial-gradient(circle_at_bottom_left,rgba(184,92,46,0.12),transparent_28%)]" />
                 <div className="relative aspect-[4/5] overflow-hidden rounded-[28px]">
                   <div className="absolute inset-0 z-10 bg-gradient-to-t from-[#120d0a]/35 via-transparent to-transparent" />
                   <div className="absolute inset-0 z-10 border border-white/8 rounded-[28px]" />
-                  <Image
-                    src={shubhamPhoto}
-                    alt={me.name}
-                    fill
-                    className="object-cover object-center"
-                    priority
-                    sizes="(max-width: 640px) 85vw, (max-width: 1024px) 420px, 460px"
-                  />
+                  <motion.div
+                    className="h-full w-full"
+                    animate={{ scale: [1, 1.035, 1] }}
+                    transition={{ duration: 9, repeat: Infinity, ease: "easeInOut" }}
+                  >
+                    <Image
+                      src={shubhamPhoto}
+                      alt={me.name}
+                      fill
+                      className="object-cover object-center"
+                      priority
+                      sizes="(max-width: 640px) 85vw, (max-width: 1024px) 420px, 460px"
+                    />
+                  </motion.div>
                 </div>
 
                 <motion.div
@@ -275,7 +331,7 @@ export default function Hero({ me, socials, nav, experience }: HeroProps) {
           className="mt-16 grid grid-cols-1 gap-4 md:grid-cols-4"
         >
           {stats.map((stat) => (
-            <div
+            <InteractiveCard
               key={stat.label}
               className="rounded-2xl border border-white/8 bg-surface-container-low/80 px-5 py-5 inner-glow backdrop-blur"
             >
@@ -285,8 +341,28 @@ export default function Hero({ me, socials, nav, experience }: HeroProps) {
               <p className="mt-2 font-body text-sm leading-relaxed text-on-surface-variant">
                 {stat.label}
               </p>
-            </div>
+            </InteractiveCard>
           ))}
+        </motion.div>
+
+        <motion.div
+          initial={{ opacity: 0, y: 16 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.55, delay: 1.05 }}
+          className="mt-10 flex items-center justify-center"
+        >
+          <a
+            href="#about"
+            className="inline-flex items-center gap-3 rounded-full border border-white/8 bg-surface-container-low/70 px-4 py-2 text-[11px] font-label uppercase tracking-[0.22em] text-on-surface-variant transition-colors hover:text-primary"
+          >
+            <motion.span
+              animate={{ y: [0, 4, 0] }}
+              transition={{ duration: 1.8, repeat: Infinity, ease: "easeInOut" }}
+            >
+              <Icon icon="ion:arrow-down" width={14} />
+            </motion.span>
+            Scroll to explore
+          </a>
         </motion.div>
       </div>
     </section>

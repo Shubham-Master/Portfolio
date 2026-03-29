@@ -3,6 +3,7 @@ import type { Me, Contact, Experience } from "@/types";
 import SectionHeader from "./SectionHeader";
 import AnimateOnScroll from "./AnimateOnScroll";
 import { StaggerContainer, StaggerItem } from "./AnimateOnScroll";
+import InteractiveCard from "./InteractiveCard";
 
 interface AboutProps {
   me: Me;
@@ -11,8 +12,19 @@ interface AboutProps {
 }
 
 function getYearsOfExperience(experience: Experience[]): string {
-  const starts = experience.filter((e) => !e.skip).map((e) => new Date(e.start).getFullYear());
-  const earliest = Math.min(...starts);
+  const startYears = experience
+    .filter((e) => !e.skip)
+    .map((e) => {
+      const match = e.start.match(/\b(19|20)\d{2}\b/);
+      return match ? Number.parseInt(match[0], 10) : Number.NaN;
+    })
+    .filter((year) => Number.isFinite(year));
+
+  if (startYears.length === 0) {
+    return "7+";
+  }
+
+  const earliest = Math.min(...startYears);
   const years = new Date().getFullYear() - earliest;
   return `${years}+`;
 }
@@ -36,31 +48,31 @@ export default function About({ me, contacts, experience }: AboutProps) {
       <StaggerContainer className="grid grid-cols-2 sm:grid-cols-4 gap-3 mb-8">
         {STATS.map((stat) => (
           <StaggerItem key={stat.label}>
-            <div className="bg-surface-container-low rounded-xl p-4 inner-glow text-center">
+            <InteractiveCard className="bg-surface-container-low rounded-xl p-4 inner-glow text-center">
               <p className="font-headline font-bold text-2xl tracking-tighter gradient-text">
                 {stat.value}
               </p>
               <p className="font-label text-xs text-on-surface-variant mt-1">
                 {stat.label}
               </p>
-            </div>
+            </InteractiveCard>
           </StaggerItem>
         ))}
       </StaggerContainer>
 
       <AnimateOnScroll className="grid grid-cols-1 lg:grid-cols-2 gap-6" delay={0.1}>
         {/* Bio card */}
-        <div className="bg-surface-container-low rounded-2xl p-7 inner-glow">
+        <InteractiveCard className="bg-surface-container-low rounded-2xl p-7 inner-glow">
           <h3 className="font-headline font-bold text-xl tracking-tighter text-on-surface mb-4">
             {me.about}
           </h3>
           <p className="font-body text-sm leading-[1.8] text-on-surface-variant whitespace-pre-line">
             {me.summaryLong ?? me.summary}
           </p>
-        </div>
+        </InteractiveCard>
 
         {/* Contact info */}
-        <div className="bg-surface-container-low rounded-2xl p-7 inner-glow">
+        <InteractiveCard className="bg-surface-container-low rounded-2xl p-7 inner-glow">
           <h4 className="font-headline font-semibold text-sm tracking-tight text-on-surface mb-5">
             Contact Details
           </h4>
@@ -94,7 +106,7 @@ export default function About({ me, contacts, experience }: AboutProps) {
               </div>
             ))}
           </div>
-        </div>
+        </InteractiveCard>
       </AnimateOnScroll>
     </section>
   );
