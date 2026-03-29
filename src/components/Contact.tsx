@@ -79,14 +79,14 @@ export default function Contact({ contacts, me, socials }: ContactProps) {
             className="h-full rounded-2xl p-8 flex flex-col justify-between gap-8 relative overflow-hidden"
             style={{
               background:
-                "linear-gradient(135deg, rgba(165,231,255,0.07) 0%, rgba(0,210,255,0.07) 100%)",
+                "linear-gradient(135deg, rgba(242,179,110,0.08) 0%, rgba(224,137,61,0.08) 55%, rgba(184,92,46,0.08) 100%)",
             }}
           >
             {/* Ambient glow */}
             <div
               className="absolute -top-8 -right-8 w-48 h-48 rounded-full opacity-10 pointer-events-none"
               style={{
-                background: "radial-gradient(circle, #00d2ff 0%, transparent 70%)",
+                background: "radial-gradient(circle, #e0893d 0%, transparent 70%)",
               }}
             />
 

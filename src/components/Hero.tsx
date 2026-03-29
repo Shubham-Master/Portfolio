@@ -16,8 +16,19 @@ interface HeroProps {
 }
 
 function getYearsOfExperience(experience: Experience[]): string {
-  const starts = experience.filter((e) => !e.skip).map((e) => new Date(e.start).getFullYear());
-  const earliest = Math.min(...starts);
+  const startYears = experience
+    .filter((e) => !e.skip)
+    .map((e) => {
+      const match = e.start.match(/\b(19|20)\d{2}\b/);
+      return match ? Number.parseInt(match[0], 10) : Number.NaN;
+    })
+    .filter((year) => Number.isFinite(year));
+
+  if (startYears.length === 0) {
+    return "7+";
+  }
+
+  const earliest = Math.min(...startYears);
   const years = new Date().getFullYear() - earliest;
   return `${years}+`;
 }
@@ -52,7 +63,7 @@ export default function Hero({ me, socials, nav, experience }: HeroProps) {
         className="absolute inset-0 pointer-events-none"
         style={{
           background:
-            "radial-gradient(circle at 18% 18%, rgba(87,217,255,0.16), transparent 24%), radial-gradient(circle at 82% 24%, rgba(131,92,255,0.12), transparent 24%), radial-gradient(circle at 50% 85%, rgba(87,217,255,0.08), transparent 30%)",
+            "radial-gradient(circle at 18% 18%, rgba(242,179,110,0.16), transparent 24%), radial-gradient(circle at 82% 24%, rgba(184,92,46,0.14), transparent 24%), radial-gradient(circle at 50% 85%, rgba(201,107,39,0.1), transparent 30%)",
         }}
       />
       <div className="absolute inset-0 bg-[linear-gradient(rgba(255,255,255,0.018)_1px,transparent_1px),linear-gradient(90deg,rgba(255,255,255,0.018)_1px,transparent_1px)] bg-[size:72px_72px] opacity-30 pointer-events-none" />
@@ -185,7 +196,7 @@ export default function Hero({ me, socials, nav, experience }: HeroProps) {
               <div
                 className="absolute -inset-6 rounded-[40px] opacity-40 blur-3xl"
                 style={{
-                  background: "linear-gradient(135deg, rgba(87,217,255,0.34), rgba(131,92,255,0.2))",
+                  background: "linear-gradient(135deg, rgba(242,179,110,0.34), rgba(184,92,46,0.24))",
                 }}
               />
               <motion.div
@@ -194,10 +205,10 @@ export default function Hero({ me, socials, nav, experience }: HeroProps) {
                 transition={{ duration: 24, repeat: Infinity, ease: "linear" }}
               />
               <div className="absolute inset-6 rounded-[36px] border border-primary/20" />
-              <div className="relative overflow-hidden rounded-[36px] border border-white/10 bg-[#0f1217] p-4 shadow-[0_32px_80px_rgba(0,0,0,0.32)]">
-                <div className="absolute inset-0 bg-[radial-gradient(circle_at_top_right,rgba(87,217,255,0.18),transparent_32%),radial-gradient(circle_at_bottom_left,rgba(131,92,255,0.12),transparent_28%)]" />
+              <div className="relative overflow-hidden rounded-[36px] border border-white/10 bg-[#16110f] p-4 shadow-[0_32px_80px_rgba(0,0,0,0.32)]">
+                <div className="absolute inset-0 bg-[radial-gradient(circle_at_top_right,rgba(242,179,110,0.18),transparent_32%),radial-gradient(circle_at_bottom_left,rgba(184,92,46,0.12),transparent_28%)]" />
                 <div className="relative aspect-[4/5] overflow-hidden rounded-[28px]">
-                  <div className="absolute inset-0 z-10 bg-gradient-to-t from-[#0d1117]/30 via-transparent to-transparent" />
+                  <div className="absolute inset-0 z-10 bg-gradient-to-t from-[#120d0a]/35 via-transparent to-transparent" />
                   <div className="absolute inset-0 z-10 border border-white/8 rounded-[28px]" />
                   <Image
                     src={shubhamPhoto}
@@ -213,7 +224,7 @@ export default function Hero({ me, socials, nav, experience }: HeroProps) {
                   initial={{ opacity: 0, x: 18 }}
                   animate={{ opacity: 1, x: 0, y: [0, -8, 0] }}
                   transition={{ duration: 0.5, delay: 0.8, y: { duration: 5.2, repeat: Infinity, ease: "easeInOut" } }}
-                  className="absolute right-0 top-10 z-20 translate-x-6 rounded-2xl border border-white/10 bg-[#121820]/90 px-4 py-3 shadow-[0_12px_32px_rgba(0,0,0,0.28)] backdrop-blur"
+                  className="absolute right-0 top-10 z-20 translate-x-6 rounded-2xl border border-white/10 bg-[#19120f]/90 px-4 py-3 shadow-[0_12px_32px_rgba(0,0,0,0.28)] backdrop-blur"
                 >
                   <p className="font-label text-[11px] uppercase tracking-[0.18em] text-on-surface-variant">
                     Platform Focus
@@ -227,7 +238,7 @@ export default function Hero({ me, socials, nav, experience }: HeroProps) {
                   initial={{ opacity: 0, y: 18 }}
                   animate={{ opacity: 1, y: [0, 10, 0] }}
                   transition={{ duration: 0.5, delay: 0.9, y: { duration: 5.8, repeat: Infinity, ease: "easeInOut" } }}
-                  className="absolute bottom-6 left-0 z-20 -translate-x-6 rounded-2xl border border-primary/20 bg-[#111820]/92 px-5 py-4 shadow-[0_18px_40px_rgba(0,0,0,0.34)] backdrop-blur"
+                  className="absolute bottom-6 left-0 z-20 -translate-x-6 rounded-2xl border border-primary/20 bg-[#17110e]/92 px-5 py-4 shadow-[0_18px_40px_rgba(0,0,0,0.34)] backdrop-blur"
                 >
                   <p className="font-headline text-3xl font-bold tracking-tight text-on-surface">
                     8K+
@@ -241,7 +252,7 @@ export default function Hero({ me, socials, nav, experience }: HeroProps) {
               {FLOATING_LABELS.map((item, idx) => (
                 <motion.div
                   key={item.label}
-                  className={`absolute z-20 items-center rounded-full border border-white/10 bg-[#121820]/88 px-4 py-2 text-[11px] font-label uppercase tracking-[0.18em] text-on-surface-variant backdrop-blur ${item.className}`}
+                  className={`absolute z-20 items-center rounded-full border border-white/10 bg-[#1a1310]/88 px-4 py-2 text-[11px] font-label uppercase tracking-[0.18em] text-on-surface-variant backdrop-blur ${item.className}`}
                   initial={{ opacity: 0, y: 18 }}
                   animate={{ opacity: 1, y: [0, idx % 2 === 0 ? -10 : 10, 0] }}
                   transition={{
