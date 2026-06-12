@@ -18,6 +18,8 @@ const NAV_LINKS = [
   { label: "Contact", href: "#contact" },
 ];
 
+const SECTION_IDS = NAV_LINKS.map((l) => l.href.replace("#", ""));
+
 interface NavigationProps {
   nav: Nav;
   me: Me;
@@ -26,11 +28,31 @@ interface NavigationProps {
 export default function Navigation({ me, nav }: NavigationProps) {
   const [scrolled, setScrolled] = useState(false);
   const [mobileOpen, setMobileOpen] = useState(false);
+  const [activeSection, setActiveSection] = useState<string>("");
 
   useEffect(() => {
     const onScroll = () => setScrolled(window.scrollY > 20);
     window.addEventListener("scroll", onScroll, { passive: true });
     return () => window.removeEventListener("scroll", onScroll);
+  }, []);
+
+  useEffect(() => {
+    const observers: IntersectionObserver[] = [];
+
+    for (const id of SECTION_IDS) {
+      const el = document.getElementById(id);
+      if (!el) continue;
+      const obs = new IntersectionObserver(
+        ([entry]) => {
+          if (entry.isIntersecting) setActiveSection(id);
+        },
+        { rootMargin: "-40% 0px -50% 0px", threshold: 0 }
+      );
+      obs.observe(el);
+      observers.push(obs);
+    }
+
+    return () => observers.forEach((o) => o.disconnect());
   }, []);
 
   return (
@@ -65,15 +87,27 @@ export default function Navigation({ me, nav }: NavigationProps) {
 
           {/* Nav links — hidden on mobile */}
           <div className="hidden lg:flex items-center gap-5">
-            {NAV_LINKS.map((link) => (
-              <a
-                key={link.href}
-                href={link.href}
-                className="relative text-on-surface-variant hover:text-on-surface transition-colors text-xs font-medium after:absolute after:left-0 after:-bottom-1 after:h-px after:w-full after:origin-left after:scale-x-0 after:bg-primary after:transition-transform after:duration-300 hover:after:scale-x-100"
-              >
-                {link.label}
-              </a>
-            ))}
+            {NAV_LINKS.map((link) => {
+              const isActive = activeSection === link.href.replace("#", "");
+              return (
+                <a
+                  key={link.href}
+                  href={link.href}
+                  className={`relative text-xs font-medium transition-colors duration-200 ${
+                    isActive ? "text-primary" : "text-on-surface-variant hover:text-on-surface"
+                  }`}
+                >
+                  {link.label}
+                  {isActive && (
+                    <motion.span
+                      layoutId="nav-active-dot"
+                      className="absolute -bottom-1 left-1/2 -translate-x-1/2 h-1 w-1 rounded-full bg-primary"
+                      transition={{ type: "spring", stiffness: 380, damping: 30 }}
+                    />
+                  )}
+                </a>
+              );
+            })}
           </div>
 
           {/* CTAs */}
@@ -119,20 +153,28 @@ export default function Navigation({ me, nav }: NavigationProps) {
               className="lg:hidden mt-2 mx-4 rounded-xl bg-surface-container-low/95 backdrop-blur-xl p-4 shadow-glow-md"
             >
               <div className="flex flex-col gap-1">
-                {NAV_LINKS.map((link, idx) => (
-                  <motion.a
-                    key={link.href}
-                    href={link.href}
-                    onClick={() => setMobileOpen(false)}
-                    initial={{ opacity: 0, x: -10 }}
-                    animate={{ opacity: 1, x: 0 }}
-                    exit={{ opacity: 0, x: -10 }}
-                    transition={{ duration: 0.2, delay: idx * 0.03 }}
-                    className="px-4 py-2.5 rounded-md text-on-surface-variant hover:text-on-surface hover:bg-surface-container transition-all text-sm font-medium"
-                  >
-                    {link.label}
-                  </motion.a>
-                ))}
+                {NAV_LINKS.map((link, idx) => {
+                  const isActive = activeSection === link.href.replace("#", "");
+                  return (
+                    <motion.a
+                      key={link.href}
+                      href={link.href}
+                      onClick={() => setMobileOpen(false)}
+                      initial={{ opacity: 0, x: -10 }}
+                      animate={{ opacity: 1, x: 0 }}
+                      exit={{ opacity: 0, x: -10 }}
+                      transition={{ duration: 0.2, delay: idx * 0.03 }}
+                      className={`flex items-center gap-2 px-4 py-2.5 rounded-md transition-all text-sm font-medium ${
+                        isActive
+                          ? "text-primary bg-primary/8"
+                          : "text-on-surface-variant hover:text-on-surface hover:bg-surface-container"
+                      }`}
+                    >
+                      {isActive && <span className="h-1.5 w-1.5 rounded-full bg-primary flex-shrink-0" />}
+                      {link.label}
+                    </motion.a>
+                  );
+                })}
                 <div className="border-t border-outline-variant/20 mt-2 pt-3 flex gap-2">
                   <a
                     href={nav.resume}

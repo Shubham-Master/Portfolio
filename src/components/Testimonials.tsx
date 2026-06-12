@@ -129,7 +129,6 @@ export default function Testimonials({ testimonials }: TestimonialsProps) {
   return (
     <section id="testimonials" className="section-base">
       <SectionHeader
-        label="Social Proof"
         title="What people I've worked with say"
         description="A few words from teammates and engineering leaders who've seen my work up close."
       />

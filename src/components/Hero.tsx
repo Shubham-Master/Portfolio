@@ -1,6 +1,7 @@
 "use client";
 
 import { motion } from "framer-motion";
+import { useState, useEffect } from "react";
 import Image from "next/image";
 import { Icon } from "@iconify/react";
 import type { Me, Social, Nav, Experience } from "@/types";
@@ -25,14 +26,18 @@ function getYearsOfExperience(experience: Experience[]): string {
     })
     .filter((year) => Number.isFinite(year));
 
-  if (startYears.length === 0) {
-    return "7+";
-  }
-
+  if (startYears.length === 0) return "7+";
   const earliest = Math.min(...startYears);
   const years = new Date().getFullYear() - earliest;
   return `${years}+`;
 }
+
+const TYPED_ROLES = [
+  "Cloud Platform Engineer",
+  "DevOps Architect",
+  "Site Reliability Engineer",
+  "Infrastructure Automation",
+];
 
 const HIGHLIGHTS = [
   "Kubernetes Platform Engineering",
@@ -52,6 +57,52 @@ const MICRO_PROOFS = [
   "Platform-first mindset",
   "Built for production",
 ];
+
+function TypewriterRole() {
+  const [roleIdx, setRoleIdx] = useState(0);
+  const [displayed, setDisplayed] = useState("");
+  const [phase, setPhase] = useState<"typing" | "pause" | "erasing">("typing");
+
+  useEffect(() => {
+    const current = TYPED_ROLES[roleIdx];
+
+    if (phase === "typing") {
+      if (displayed.length < current.length) {
+        const t = setTimeout(() => setDisplayed(current.slice(0, displayed.length + 1)), 55);
+        return () => clearTimeout(t);
+      } else {
+        const t = setTimeout(() => setPhase("pause"), 1800);
+        return () => clearTimeout(t);
+      }
+    }
+
+    if (phase === "pause") {
+      const t = setTimeout(() => setPhase("erasing"), 400);
+      return () => clearTimeout(t);
+    }
+
+    if (phase === "erasing") {
+      if (displayed.length > 0) {
+        const t = setTimeout(() => setDisplayed(displayed.slice(0, -1)), 28);
+        return () => clearTimeout(t);
+      } else {
+        setRoleIdx((i) => (i + 1) % TYPED_ROLES.length);
+        setPhase("typing");
+      }
+    }
+  }, [displayed, phase, roleIdx]);
+
+  return (
+    <span className="inline-flex items-center gap-1">
+      <span className="gradient-text">{displayed}</span>
+      <motion.span
+        animate={{ opacity: [1, 0, 1] }}
+        transition={{ duration: 0.9, repeat: Infinity, ease: "linear" }}
+        className="inline-block w-0.5 h-[1em] bg-primary rounded-full align-middle"
+      />
+    </span>
+  );
+}
 
 export default function Hero({ me, socials, nav, experience }: HeroProps) {
   const stats = [
@@ -122,7 +173,7 @@ export default function Hero({ me, socials, nav, experience }: HeroProps) {
                   {me.name.split(" ")[0]}
                 </motion.span>
                 <motion.span
-                  className="block text-5xl sm:text-6xl xl:text-7xl gradient-text"
+                  className="block text-5xl sm:text-6xl xl:text-7xl text-on-surface"
                   initial={{ opacity: 0, y: 32, filter: "blur(14px)" }}
                   animate={{ opacity: 1, y: 0, filter: "blur(0px)" }}
                   transition={{ duration: 0.82, delay: 0.32, ease: [0.22, 1, 0.36, 1] }}
@@ -130,16 +181,16 @@ export default function Hero({ me, socials, nav, experience }: HeroProps) {
                   {me.name.split(" ").slice(1).join(" ")}
                 </motion.span>
               </h1>
+              {/* Typewriter role */}
+              <motion.p
+                initial={{ opacity: 0, y: 10 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ duration: 0.5, delay: 0.7 }}
+                className="mt-4 font-headline text-2xl sm:text-3xl font-semibold tracking-tight min-h-[1.4em]"
+              >
+                <TypewriterRole />
+              </motion.p>
             </motion.div>
-
-            <motion.p
-              initial={{ opacity: 0, y: 16 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.5, delay: 0.35 }}
-              className="max-w-2xl font-headline text-xl sm:text-2xl text-on-surface-variant font-medium tracking-tight"
-            >
-              {me.about}
-            </motion.p>
 
             <motion.p
               initial={{ opacity: 0, y: 16 }}
@@ -156,17 +207,11 @@ export default function Hero({ me, socials, nav, experience }: HeroProps) {
               transition={{ duration: 0.5, delay: 0.55 }}
               className="flex flex-wrap gap-3"
             >
-              <CTA
-                btn={`${me.cal}`}
-                className="btn-primary"
-              >
+              <CTA btn={`${me.cal}`} className="btn-primary">
                 <Icon icon="ion:calendar-outline" width={16} />
                 Book a call
               </CTA>
-              <UTMLink
-                href={nav.resume}
-                className="btn-ghost"
-              >
+              <UTMLink href={nav.resume} className="btn-ghost">
                 <Icon icon="ion:document-outline" width={16} />
                 View CV
               </UTMLink>
@@ -251,9 +296,7 @@ export default function Hero({ me, socials, nav, experience }: HeroProps) {
                 className="absolute inset-2 rounded-[40px] border border-white/[0.05]"
                 animate={{ rotate: 360 }}
                 transition={{ duration: 40, repeat: Infinity, ease: "linear" }}
-                style={{
-                  clipPath: "polygon(0 0, 100% 0, 100% 12%, 0 42%)",
-                }}
+                style={{ clipPath: "polygon(0 0, 100% 0, 100% 12%, 0 42%)" }}
               />
               <div className="relative overflow-hidden rounded-[36px] border border-white/10 bg-[#16110f] p-4 shadow-[0_32px_80px_rgba(0,0,0,0.32)]">
                 <div className="absolute inset-0 bg-[radial-gradient(circle_at_top_right,rgba(242,179,110,0.18),transparent_32%),radial-gradient(circle_at_bottom_left,rgba(184,92,46,0.12),transparent_28%)]" />

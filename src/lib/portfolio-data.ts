@@ -373,38 +373,10 @@ export const services: Service[] = [
 export const projects: Project[] = [
   {
     title: "Kubernetes Platform Engineering",
-    link: "https://github.com/Shubham-Master",
+    link: "https://github.com/Shubham-Master/k8s-gitops-platform",
     description:
       "Designed and operated a production Kubernetes platform on AWS, including automated cluster provisioning with Terraform, GitOps-based deployments via Argo CD, and Helm-managed application lifecycles.",
     stack: ["Kubernetes", "Terraform", "AWS", "Helm", "Argo CD"],
-  },
-  {
-    title: "Serverless Log Processing Pipeline",
-    link: "https://github.com/Shubham-Master",
-    description:
-      "Built a high-throughput serverless log ingestion pipeline using AWS Lambda and SQS to process telemetry from thousands of embedded devices, improving observability and reducing manual debugging effort.",
-    stack: ["AWS Lambda", "SQS", "S3", "Go", "MongoDB"],
-  },
-  {
-    title: "Multi-Cloud Infrastructure Framework",
-    link: "https://github.com/Shubham-Master",
-    description:
-      "Created a reusable Infrastructure-as-Code framework enabling consistent provisioning across AWS, Azure, and GCP with standardized networking, IAM, compute, and monitoring modules.",
-    stack: ["Terraform", "AWS", "Azure", "GCP", "Ansible"],
-  },
-  {
-    title: "CI/CD Automation & Release Engineering",
-    link: "https://github.com/Shubham-Master",
-    description:
-      "Implemented end-to-end CI/CD pipelines for firmware and backend services with automated testing, artifact management, staged rollouts, and stronger rollback strategies.",
-    stack: ["Jenkins", "GitHub Actions", "Docker", "Bash", "Python"],
-  },
-  {
-    title: "Embedded Fleet Monitoring & Diagnostics",
-    link: "https://github.com/Shubham-Master",
-    description:
-      "Developed monitoring and diagnostics workflows for 8,000+ embedded Linux devices, integrating Kafka-based event streaming and Elasticsearch-backed analytics for proactive fault detection.",
-    stack: ["Linux", "AWS", "Kafka", "Python", "Elasticsearch"],
   },
 ];
 
