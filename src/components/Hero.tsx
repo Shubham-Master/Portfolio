@@ -1,14 +1,15 @@
 "use client";
 
+import { useEffect, useMemo, useRef, useState, type FormEvent } from "react";
 import { motion } from "framer-motion";
-import { useState, useEffect } from "react";
 import Image from "next/image";
 import { Icon } from "@iconify/react";
 import type { Me, Social, Nav, Experience } from "@/types";
 import shubhamPhoto from "@/images/shubham-photo.jpeg";
 import { UTMLink } from "./UTMLink";
 import CTA from "./CTA";
-import InteractiveCard from "./InteractiveCard";
+import AnimatedMetric from "./AnimatedMetric";
+import { usePrefersReducedMotion } from "@/hooks/usePrefersReducedMotion";
 
 interface HeroProps {
   me: Me;
@@ -17,7 +18,9 @@ interface HeroProps {
   experience: Experience[];
 }
 
-function getYearsOfExperience(experience: Experience[]): string {
+type Line = { kind: "cmd" | "out"; text: string; isUser?: boolean };
+
+function getYearsOfExperience(experience: Experience[]): number {
   const startYears = experience
     .filter((e) => !e.skip)
     .map((e) => {
@@ -26,17 +29,40 @@ function getYearsOfExperience(experience: Experience[]): string {
     })
     .filter((year) => Number.isFinite(year));
 
-  if (startYears.length === 0) return "7+";
+  if (startYears.length === 0) return 7;
   const earliest = Math.min(...startYears);
-  const years = new Date().getFullYear() - earliest;
-  return `${years}+`;
+  return new Date().getFullYear() - earliest;
 }
 
-const TYPED_ROLES = [
-  "Cloud Platform Engineer",
-  "DevOps Architect",
-  "Site Reliability Engineer",
-  "Infrastructure Automation",
+function buildBootLines(me: Me): Line[] {
+  return [
+    { kind: "cmd", text: "whoami" },
+    { kind: "out", text: me.name },
+    { kind: "out", text: "" },
+    { kind: "cmd", text: "cat role.txt" },
+    { kind: "out", text: "Cloud Platform Engineer — AI Platform Operations" },
+    { kind: "out", text: "7+ years · Cloud, Platform & Reliability Engineering" },
+    { kind: "out", text: "" },
+    { kind: "cmd", text: "location --current" },
+    { kind: "out", text: `${me.location} (remote-friendly)` },
+    { kind: "out", text: "" },
+    { kind: "cmd", text: "./status --check" },
+    { kind: "out", text: "All systems operational. Currently at SingleStore." },
+    { kind: "out", text: "Type 'help' to see available commands." },
+  ];
+}
+
+const HELP_LINES = [
+  "available commands:",
+  "help — show this list",
+  "about — jump to About",
+  "experience — jump to Experience",
+  "skills — jump to Skills",
+  "projects — jump to Projects",
+  "contact — jump to Contact",
+  "resume — open my CV",
+  "sudo hire-me — ...",
+  "clear — clear the screen",
 ];
 
 const HIGHLIGHTS = [
@@ -46,167 +72,234 @@ const HIGHLIGHTS = [
   "Multi-Cloud Infrastructure",
 ];
 
-const FLOATING_LABELS = [
-  { label: "AWS", className: "-left-6 top-14 hidden lg:flex", duration: 6.5 },
-  { label: "Terraform", className: "-right-8 top-1/3 hidden lg:flex", duration: 7.2 },
-  { label: "Observability", className: "left-12 -bottom-5 hidden lg:flex", duration: 6.8 },
+const MICRO_PROOFS = ["Remote-friendly", "Platform-first mindset", "Built for production"];
+
+const ORBIT_BADGES = [
+  { label: "AWS Bedrock", className: "-left-6 top-14" },
+  { label: "FinOps", className: "-right-6 top-1/3" },
+  { label: "Kubernetes", className: "left-10 -bottom-4" },
 ];
 
-const MICRO_PROOFS = [
-  "Remote-friendly",
-  "Platform-first mindset",
-  "Built for production",
-];
+function wait(ms: number): Promise<void> {
+  return new Promise((resolve) => setTimeout(resolve, ms));
+}
 
-function TypewriterRole() {
-  const [roleIdx, setRoleIdx] = useState(0);
-  const [displayed, setDisplayed] = useState("");
-  const [phase, setPhase] = useState<"typing" | "pause" | "erasing">("typing");
+function scrollToSection(id: string, smooth: boolean) {
+  const el = document.getElementById(id);
+  if (el) el.scrollIntoView({ behavior: smooth ? "smooth" : "auto", block: "start" });
+}
 
-  useEffect(() => {
-    const current = TYPED_ROLES[roleIdx];
+function TerminalLine({ line, cursor }: { line: Line; cursor?: boolean }) {
+  if (line.text === "" && !cursor) {
+    return <p className="leading-relaxed">&nbsp;</p>;
+  }
 
-    if (phase === "typing") {
-      if (displayed.length < current.length) {
-        const t = setTimeout(() => setDisplayed(current.slice(0, displayed.length + 1)), 55);
-        return () => clearTimeout(t);
-      } else {
-        const t = setTimeout(() => setPhase("pause"), 1800);
-        return () => clearTimeout(t);
-      }
-    }
-
-    if (phase === "pause") {
-      const t = setTimeout(() => setPhase("erasing"), 400);
-      return () => clearTimeout(t);
-    }
-
-    if (phase === "erasing") {
-      if (displayed.length > 0) {
-        const t = setTimeout(() => setDisplayed(displayed.slice(0, -1)), 28);
-        return () => clearTimeout(t);
-      } else {
-        setRoleIdx((i) => (i + 1) % TYPED_ROLES.length);
-        setPhase("typing");
-      }
-    }
-  }, [displayed, phase, roleIdx]);
+  const prefix = line.kind === "cmd" ? (line.isUser ? "visitor@shubhamkumar:~$" : "$") : ">";
 
   return (
-    <span className="inline-flex items-center gap-1">
-      <span className="gradient-text">{displayed}</span>
-      <motion.span
-        animate={{ opacity: [1, 0, 1] }}
-        transition={{ duration: 0.9, repeat: Infinity, ease: "linear" }}
-        className="inline-block w-0.5 h-[1em] bg-primary rounded-full align-middle"
-      />
-    </span>
+    <p className="leading-relaxed">
+      <span className="terminal-glow text-primary">{prefix}</span>{" "}
+      <span className={line.kind === "cmd" ? "text-on-surface-variant" : "text-on-surface"}>
+        {line.text}
+      </span>
+      {cursor && (
+        <span className="blink-cursor ml-0.5 -mb-[2px] inline-block h-[14px] w-[7px] bg-primary align-middle" />
+      )}
+    </p>
   );
 }
 
 export default function Hero({ me, socials, nav, experience }: HeroProps) {
+  const reduceMotion = usePrefersReducedMotion();
+  const bootLines = useMemo(() => buildBootLines(me), [me]);
+
+  const [history, setHistory] = useState<Line[]>([]);
+  const [typingLine, setTypingLine] = useState<Line | null>(null);
+  const [bootDone, setBootDone] = useState(false);
+  const [input, setInput] = useState("");
+  const outputRef = useRef<HTMLDivElement>(null);
+  const inputRef = useRef<HTMLInputElement>(null);
+
+  useEffect(() => {
+    if (reduceMotion) {
+      setHistory(bootLines);
+      setBootDone(true);
+      return;
+    }
+
+    let cancelled = false;
+
+    async function run() {
+      for (const line of bootLines) {
+        if (cancelled) return;
+        if (line.text === "") {
+          setHistory((h) => [...h, line]);
+          await wait(140);
+          continue;
+        }
+        for (let i = 1; i <= line.text.length; i++) {
+          if (cancelled) return;
+          setTypingLine({ ...line, text: line.text.slice(0, i) });
+          await wait(18 + Math.random() * 24);
+        }
+        if (cancelled) return;
+        setHistory((h) => [...h, line]);
+        setTypingLine(null);
+        await wait(280);
+      }
+      if (!cancelled) setBootDone(true);
+    }
+
+    run();
+    return () => {
+      cancelled = true;
+    };
+  }, [bootLines, reduceMotion]);
+
+  useEffect(() => {
+    if (outputRef.current) {
+      outputRef.current.scrollTop = outputRef.current.scrollHeight;
+    }
+  }, [history, typingLine]);
+
+  function handleSubmit(e: FormEvent) {
+    e.preventDefault();
+    const raw = input.trim();
+    if (!raw) return;
+
+    const cmd = raw.toLowerCase();
+    const newLines: Line[] = [{ kind: "cmd", text: raw, isUser: true }];
+
+    function goTo(id: string) {
+      // Blur first — a focused input otherwise fights scrollIntoView by
+      // snapping the viewport back to keep itself visible.
+      inputRef.current?.blur();
+      scrollToSection(id, !reduceMotion);
+    }
+
+    switch (cmd) {
+      case "help":
+        newLines.push(...HELP_LINES.map((text) => ({ kind: "out" as const, text })));
+        break;
+      case "about":
+        newLines.push({ kind: "out", text: me.about });
+        goTo("about");
+        break;
+      case "experience":
+        newLines.push({ kind: "out", text: "Loading experience timeline..." });
+        goTo("experience");
+        break;
+      case "skills":
+        newLines.push({ kind: "out", text: "Rendering tech stack..." });
+        goTo("skills");
+        break;
+      case "projects":
+        newLines.push({ kind: "out", text: "Fetching selected work..." });
+        goTo("projects");
+        break;
+      case "contact":
+        newLines.push({ kind: "out", text: "Opening contact channels..." });
+        goTo("contact");
+        break;
+      case "resume":
+      case "cv":
+        newLines.push({ kind: "out", text: "Opening resume in a new tab..." });
+        window.open(nav.resume, "_blank", "noopener,noreferrer");
+        break;
+      case "sudo hire-me":
+        newLines.push(
+          { kind: "out", text: "Permission granted." },
+          { kind: "out", text: "Redirecting to contact..." }
+        );
+        goTo("contact");
+        break;
+      case "clear":
+        setHistory([]);
+        setInput("");
+        return;
+      default:
+        newLines.push({ kind: "out", text: `bash: ${raw}: command not found — type 'help'` });
+    }
+
+    setHistory((h) => [...h, ...newLines]);
+    setInput("");
+  }
+
   const stats = [
-    { value: getYearsOfExperience(experience), label: "Years building in production" },
-    { value: "8K+", label: "Embedded devices supported" },
-    { value: "50%", label: "Faster release workflows" },
-    { value: "80+", label: "Hours saved each month" },
+    { to: getYearsOfExperience(experience), suffix: "+", label: "Years building in production" },
+    { to: 8, suffix: "K+", label: "Embedded devices supported" },
+    { to: 50, suffix: "%", label: "Faster release workflows" },
+    { to: 80, suffix: "+", label: "Hours saved each month" },
   ];
 
   return (
     <section
       id="hero"
-      className="relative min-h-screen flex items-center pt-28 pb-20 px-4 sm:px-6 lg:px-8 overflow-hidden"
+      className="relative pt-32 pb-20 px-4 sm:px-6 lg:px-8 border-b border-outline-variant"
     >
-      <div
-        className="absolute inset-0 pointer-events-none"
-        style={{
-          background:
-            "radial-gradient(circle at 18% 18%, rgba(242,179,110,0.16), transparent 24%), radial-gradient(circle at 82% 24%, rgba(184,92,46,0.14), transparent 24%), radial-gradient(circle at 50% 85%, rgba(201,107,39,0.1), transparent 30%)",
-        }}
-      />
-      <div className="absolute inset-0 bg-[linear-gradient(rgba(255,255,255,0.018)_1px,transparent_1px),linear-gradient(90deg,rgba(255,255,255,0.018)_1px,transparent_1px)] bg-[size:72px_72px] opacity-30 pointer-events-none" />
+      <motion.div
+        initial={reduceMotion ? false : { opacity: 0, y: 24 }}
+        animate={{ opacity: 1, y: 0 }}
+        transition={{ duration: 0.6, ease: [0.22, 1, 0.36, 1] }}
+        className="max-w-6xl mx-auto w-full"
+      >
+        <div className="grid grid-cols-1 lg:grid-cols-[1.15fr_0.85fr] gap-10 items-start">
+          <div className="flex flex-col gap-6">
+            {/* Terminal window */}
+            <div className="terminal-scanlines relative overflow-hidden rounded-lg border border-outline bg-surface-container-lowest">
+              <div className="relative z-10 flex items-center gap-2 border-b border-outline px-4 py-2.5">
+                <span className="terminal-glow inline-block h-2 w-2 rounded-full bg-primary" />
+                <p className="font-label text-xs text-on-surface-variant">
+                  visitor@shubhamkumar<span className="text-on-surface-variant/60">:~</span>{" "}
+                  <span className="terminal-glow text-primary">● online</span>
+                </p>
+              </div>
 
-      <div className="max-w-6xl mx-auto w-full">
-        <div className="grid grid-cols-1 lg:grid-cols-[1.12fr_0.88fr] gap-12 items-center">
-          <div className="flex flex-col gap-7">
-            <motion.div
-              initial={{ opacity: 0, y: 16 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.45, delay: 0.05 }}
-              className="flex flex-wrap items-center gap-3"
-            >
-              <a
-                href={me.locationLink}
-                target="_blank"
-                rel="noopener noreferrer"
-                className="inline-flex items-center gap-2 rounded-full border border-white/10 bg-surface-container-low/90 px-3 py-1.5 text-xs font-label text-on-surface-variant transition-colors hover:text-primary"
+              <div
+                ref={outputRef}
+                aria-live="polite"
+                className="relative z-10 max-h-[340px] overflow-y-auto px-4 py-4 font-label text-sm"
               >
-                <span className="w-1.5 h-1.5 rounded-full bg-primary-container animate-pulse" />
-                {me.location}
-                <Icon icon="ion:chevron-forward" width={12} />
-              </a>
-              <motion.span
-                animate={{ boxShadow: ["0 0 0 rgba(224,137,61,0)", "0 0 18px rgba(224,137,61,0.2)", "0 0 0 rgba(224,137,61,0)"] }}
-                transition={{ duration: 3.4, repeat: Infinity, ease: "easeInOut" }}
-                className="inline-flex items-center gap-2 rounded-full border border-primary/20 bg-primary/10 px-3 py-1.5 text-xs font-label text-primary"
-              >
-                <span className="h-2 w-2 rounded-full bg-primary-container" />
-                Currently at SingleStore
-              </motion.span>
-            </motion.div>
+                {history.map((line, i) => (
+                  <TerminalLine key={i} line={line} />
+                ))}
+                {typingLine && <TerminalLine line={typingLine} cursor />}
+              </div>
 
-            <motion.div
-              initial={{ opacity: 0, y: 20 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.6, delay: 0.2 }}
-            >
-              <p className="mb-3 font-label text-xs uppercase tracking-[0.32em] text-primary/80">
-                Cloud, platform and reliability engineering
-              </p>
-              <h1 className="font-headline font-bold tracking-tighter leading-[0.9]">
-                <motion.span
-                  className="block text-5xl sm:text-6xl xl:text-7xl text-on-surface"
-                  initial={{ opacity: 0, y: 28, filter: "blur(12px)" }}
-                  animate={{ opacity: 1, y: 0, filter: "blur(0px)" }}
-                  transition={{ duration: 0.7, delay: 0.22, ease: [0.22, 1, 0.36, 1] }}
+              {bootDone && (
+                <form
+                  onSubmit={handleSubmit}
+                  className="relative z-10 flex items-center gap-2 border-t border-outline px-4 py-3"
                 >
-                  {me.name.split(" ")[0]}
-                </motion.span>
-                <motion.span
-                  className="block text-5xl sm:text-6xl xl:text-7xl text-on-surface"
-                  initial={{ opacity: 0, y: 32, filter: "blur(14px)" }}
-                  animate={{ opacity: 1, y: 0, filter: "blur(0px)" }}
-                  transition={{ duration: 0.82, delay: 0.32, ease: [0.22, 1, 0.36, 1] }}
-                >
-                  {me.name.split(" ").slice(1).join(" ")}
-                </motion.span>
-              </h1>
-              {/* Typewriter role */}
-              <motion.p
-                initial={{ opacity: 0, y: 10 }}
-                animate={{ opacity: 1, y: 0 }}
-                transition={{ duration: 0.5, delay: 0.7 }}
-                className="mt-4 font-headline text-2xl sm:text-3xl font-semibold tracking-tight min-h-[1.4em]"
-              >
-                <TypewriterRole />
-              </motion.p>
-            </motion.div>
+                  <label
+                    htmlFor="terminal-input"
+                    className="terminal-glow whitespace-nowrap font-label text-sm text-primary"
+                  >
+                    visitor@shubhamkumar:~$
+                  </label>
+                  <input
+                    id="terminal-input"
+                    ref={inputRef}
+                    type="text"
+                    value={input}
+                    onChange={(e) => setInput(e.target.value)}
+                    placeholder="type 'help'"
+                    autoComplete="off"
+                    autoCapitalize="off"
+                    autoCorrect="off"
+                    spellCheck={false}
+                    aria-label="Terminal command input"
+                    className="flex-1 rounded-sm bg-transparent px-1 font-label text-sm text-on-surface outline-none placeholder:text-on-surface-variant/50 focus-visible:ring-2 focus-visible:ring-primary/60"
+                  />
+                  <button type="submit" className="sr-only">
+                    Run command
+                  </button>
+                </form>
+              )}
+            </div>
 
-            <motion.p
-              initial={{ opacity: 0, y: 16 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.5, delay: 0.45 }}
-              className="font-body text-base leading-[1.9] text-on-surface-variant max-w-2xl"
-            >
-              {me.summary}
-            </motion.p>
-
-            <motion.div
-              initial={{ opacity: 0, y: 16 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.5, delay: 0.55 }}
-              className="flex flex-wrap gap-3"
-            >
+            {/* CTAs */}
+            <div className="flex flex-wrap gap-3">
               <CTA btn={`${me.cal}`} className="btn-primary">
                 <Icon icon="ion:calendar-outline" width={16} />
                 Book a call
@@ -215,199 +308,108 @@ export default function Hero({ me, socials, nav, experience }: HeroProps) {
                 <Icon icon="ion:document-outline" width={16} />
                 View CV
               </UTMLink>
-            </motion.div>
+            </div>
 
-            <motion.div
-              initial={{ opacity: 0, y: 16 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.5, delay: 0.65 }}
-              className="flex flex-wrap items-center gap-2 lg:gap-3"
-            >
+            {/* Socials */}
+            <div className="flex flex-wrap items-center gap-2">
               {socials.map((social) => (
                 <UTMLink
                   key={social.name}
                   href={social.href}
                   aria-label={social.name}
-                  className="flex h-11 w-11 items-center justify-center rounded-full border border-white/6 bg-surface-container-low/80 text-on-surface-variant transition-all duration-200 hover:-translate-y-0.5 hover:border-primary/30 hover:bg-surface-container hover:text-primary hover:shadow-glow"
+                  className="flex h-10 w-10 items-center justify-center rounded border border-outline text-on-surface-variant transition-colors duration-150 hover:border-primary/60 hover:text-primary"
                 >
-                  <Icon icon={social.icon} width={18} />
+                  <Icon icon={social.icon} width={17} />
                 </UTMLink>
               ))}
-            </motion.div>
+            </div>
 
-            <motion.div
-              initial={{ opacity: 0, y: 16 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.5, delay: 0.75 }}
-              className="flex flex-wrap gap-2 pt-2"
-            >
+            {/* Highlight chips */}
+            <div className="flex flex-wrap gap-2">
               {HIGHLIGHTS.map((item) => (
-                <motion.span
+                <span
                   key={item}
-                  whileHover={{ y: -3, scale: 1.01 }}
-                  className="rounded-full border border-white/8 bg-white/[0.03] px-4 py-2 text-xs font-label uppercase tracking-[0.18em] text-on-surface-variant"
+                  className="rounded border border-outline px-4 py-2 text-xs font-label uppercase tracking-wider text-on-surface-variant"
                 >
                   {item}
-                </motion.span>
+                </span>
               ))}
-            </motion.div>
+            </div>
 
-            <motion.div
-              initial={{ opacity: 0, y: 16 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.5, delay: 0.82 }}
-              className="flex flex-wrap items-center gap-2 pt-1"
-            >
-              {MICRO_PROOFS.map((item, idx) => (
-                <motion.span
+            {/* Micro proofs */}
+            <div className="flex flex-wrap items-center gap-2">
+              {MICRO_PROOFS.map((item) => (
+                <span
                   key={item}
-                  initial={{ opacity: 0, y: 10 }}
-                  animate={{ opacity: 1, y: 0 }}
-                  transition={{ duration: 0.35, delay: 0.88 + idx * 0.06 }}
-                  className="inline-flex items-center gap-2 rounded-full bg-surface-container-low/70 px-3 py-1.5 text-[11px] font-label uppercase tracking-[0.16em] text-on-surface-variant"
+                  className="inline-flex items-center gap-2 text-[11px] font-label uppercase tracking-wider text-on-surface-variant"
                 >
                   <span className="h-1.5 w-1.5 rounded-full bg-primary/70" />
                   {item}
-                </motion.span>
-              ))}
-            </motion.div>
-          </div>
-
-          <motion.div
-            initial={{ opacity: 0, scale: 0.95 }}
-            animate={{ opacity: 1, scale: 1 }}
-            transition={{ duration: 0.7, delay: 0.3 }}
-            className="flex justify-center lg:justify-end"
-          >
-            <div className="relative w-full max-w-[460px]">
-              <div
-                className="hero-sheen absolute -inset-6 rounded-[40px] opacity-40 blur-3xl"
-                style={{
-                  background: "linear-gradient(135deg, rgba(242,179,110,0.34), rgba(184,92,46,0.24))",
-                }}
-              />
-              <motion.div
-                className="absolute -inset-3 rounded-[44px] border border-dashed border-primary/15"
-                animate={{ rotate: 360 }}
-                transition={{ duration: 24, repeat: Infinity, ease: "linear" }}
-              />
-              <div className="absolute inset-6 rounded-[36px] border border-primary/20" />
-              <motion.div
-                className="absolute inset-2 rounded-[40px] border border-white/[0.05]"
-                animate={{ rotate: 360 }}
-                transition={{ duration: 40, repeat: Infinity, ease: "linear" }}
-                style={{ clipPath: "polygon(0 0, 100% 0, 100% 12%, 0 42%)" }}
-              />
-              <div className="relative overflow-hidden rounded-[36px] border border-white/10 bg-[#16110f] p-4 shadow-[0_32px_80px_rgba(0,0,0,0.32)]">
-                <div className="absolute inset-0 bg-[radial-gradient(circle_at_top_right,rgba(242,179,110,0.18),transparent_32%),radial-gradient(circle_at_bottom_left,rgba(184,92,46,0.12),transparent_28%)]" />
-                <div className="relative aspect-[4/5] overflow-hidden rounded-[28px]">
-                  <div className="absolute inset-0 z-10 bg-gradient-to-t from-[#120d0a]/35 via-transparent to-transparent" />
-                  <div className="absolute inset-0 z-10 border border-white/8 rounded-[28px]" />
-                  <motion.div
-                    className="h-full w-full"
-                    animate={{ scale: [1, 1.035, 1] }}
-                    transition={{ duration: 9, repeat: Infinity, ease: "easeInOut" }}
-                  >
-                    <Image
-                      src={shubhamPhoto}
-                      alt={me.name}
-                      fill
-                      className="object-cover object-center"
-                      priority
-                      sizes="(max-width: 640px) 85vw, (max-width: 1024px) 420px, 460px"
-                    />
-                  </motion.div>
-                </div>
-
-                <motion.div
-                  initial={{ opacity: 0, x: 18 }}
-                  animate={{ opacity: 1, x: 0, y: [0, -8, 0] }}
-                  transition={{ duration: 0.5, delay: 0.8, y: { duration: 5.2, repeat: Infinity, ease: "easeInOut" } }}
-                  className="absolute right-0 top-10 z-20 translate-x-6 rounded-2xl border border-white/10 bg-[#19120f]/90 px-4 py-3 shadow-[0_12px_32px_rgba(0,0,0,0.28)] backdrop-blur"
-                >
-                  <p className="font-label text-[11px] uppercase tracking-[0.18em] text-on-surface-variant">
-                    Platform Focus
-                  </p>
-                  <p className="mt-1 font-headline text-lg font-semibold text-on-surface">
-                    Kubernetes + Cloud Ops
-                  </p>
-                </motion.div>
-
-                <motion.div
-                  initial={{ opacity: 0, y: 18 }}
-                  animate={{ opacity: 1, y: [0, 10, 0] }}
-                  transition={{ duration: 0.5, delay: 0.9, y: { duration: 5.8, repeat: Infinity, ease: "easeInOut" } }}
-                  className="absolute bottom-6 left-0 z-20 -translate-x-6 rounded-2xl border border-primary/20 bg-[#17110e]/92 px-5 py-4 shadow-[0_18px_40px_rgba(0,0,0,0.34)] backdrop-blur"
-                >
-                  <p className="font-headline text-3xl font-bold tracking-tight text-on-surface">
-                    8K+
-                  </p>
-                  <p className="mt-1 max-w-[180px] font-body text-xs leading-relaxed text-on-surface-variant">
-                    Devices supported with automation, diagnostics, and deployment tooling.
-                  </p>
-                </motion.div>
-              </div>
-
-              {FLOATING_LABELS.map((item, idx) => (
-                <motion.div
-                  key={item.label}
-                  className={`absolute z-20 items-center rounded-full border border-white/10 bg-[#1a1310]/88 px-4 py-2 text-[11px] font-label uppercase tracking-[0.18em] text-on-surface-variant backdrop-blur ${item.className}`}
-                  initial={{ opacity: 0, y: 18 }}
-                  animate={{ opacity: 1, y: [0, idx % 2 === 0 ? -10 : 10, 0] }}
-                  transition={{
-                    duration: 0.45,
-                    delay: 1 + idx * 0.1,
-                    y: { duration: item.duration, repeat: Infinity, ease: "easeInOut" },
-                  }}
-                >
-                  {item.label}
-                </motion.div>
+                </span>
               ))}
             </div>
-          </motion.div>
+          </div>
+
+          <div className="flex justify-center lg:justify-end">
+            <div className="relative w-full max-w-[400px] mt-6 mb-10 lg:mt-2 lg:mb-6">
+              <div className="relative overflow-hidden rounded-lg border border-outline bg-surface-container-low">
+                <div className="relative aspect-[4/5] overflow-hidden">
+                  <Image
+                    src={shubhamPhoto}
+                    alt={me.name}
+                    fill
+                    className="object-cover object-center"
+                    priority
+                    sizes="(max-width: 640px) 85vw, (max-width: 1024px) 420px, 420px"
+                  />
+                </div>
+              </div>
+
+              {/* Orbiting focus badges */}
+              {ORBIT_BADGES.map((badge) => (
+                <span
+                  key={badge.label}
+                  className={`orbit-badge hidden lg:inline-flex ${badge.className}`}
+                >
+                  <span className="h-1.5 w-1.5 rounded-full bg-primary" />
+                  {badge.label}
+                </span>
+              ))}
+
+              {/* Floating stat callout */}
+              <div className="surface-card absolute -bottom-8 right-4 sm:right-6 border-primary/30 px-5 py-5 shadow-[0_0_24px_rgba(47,226,140,0.12)]">
+                <p className="font-headline text-2xl font-bold tracking-tight text-primary">~150</p>
+                <p className="mt-1 max-w-[170px] font-body text-xs leading-relaxed text-on-surface-variant">
+                  Daily users on the Zero Trust IAM platform
+                </p>
+              </div>
+            </div>
+          </div>
         </div>
 
-        <motion.div
-          initial={{ opacity: 0, y: 16 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.5, delay: 0.8 }}
-          className="mt-16 grid grid-cols-1 gap-4 md:grid-cols-4"
-        >
+        <div className="mt-14 grid grid-cols-1 gap-3 md:grid-cols-4">
           {stats.map((stat) => (
-            <InteractiveCard
-              key={stat.label}
-              className="rounded-2xl border border-white/8 bg-surface-container-low/80 px-5 py-5 inner-glow backdrop-blur"
-            >
+            <div key={stat.label} className="surface-card px-5 py-5">
               <p className="font-headline text-3xl font-bold tracking-tight text-on-surface">
-                {stat.value}
+                <AnimatedMetric from={0} to={stat.to} suffix={stat.suffix} />
               </p>
               <p className="mt-2 font-body text-sm leading-relaxed text-on-surface-variant">
                 {stat.label}
               </p>
-            </InteractiveCard>
+            </div>
           ))}
-        </motion.div>
+        </div>
 
-        <motion.div
-          initial={{ opacity: 0, y: 16 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.55, delay: 1.05 }}
-          className="mt-10 flex items-center justify-center"
-        >
+        <div className="mt-10 flex items-center justify-center">
           <a
             href="#about"
-            className="inline-flex items-center gap-3 rounded-full border border-white/8 bg-surface-container-low/70 px-4 py-2 text-[11px] font-label uppercase tracking-[0.22em] text-on-surface-variant transition-colors hover:text-primary"
+            className="inline-flex items-center gap-3 rounded border border-outline px-4 py-2 text-[11px] font-label uppercase tracking-wider text-on-surface-variant transition-colors hover:text-primary"
           >
-            <motion.span
-              animate={{ y: [0, 4, 0] }}
-              transition={{ duration: 1.8, repeat: Infinity, ease: "easeInOut" }}
-            >
-              <Icon icon="ion:arrow-down" width={14} />
-            </motion.span>
+            <Icon icon="ion:arrow-down" width={14} />
             Scroll to explore
           </a>
-        </motion.div>
-      </div>
+        </div>
+      </motion.div>
     </section>
   );
 }

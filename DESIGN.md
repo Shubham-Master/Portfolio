@@ -1,79 +1,78 @@
-# Design System Specification: High-End Backend Editorial
+# Design System Specification: Graphite Panel
 
-## 1. Overview & Creative North Star: "The Digital Monolith"
-This design system is engineered for the high-precision world of senior backend architecture. It moves away from the "cluttered dashboard" aesthetic, instead embracing **The Digital Monolith**: a philosophy where the UI feels carved from dark obsidian, illuminated by the cold, precise glow of high-performance machinery.
+## 1. Overview & Creative North Star: "The Graphite Panel"
+This design system trades the ornamented, glowing "Digital Monolith" aesthetic for something closer to an instrument panel: flat graphite-blue surfaces, one hairline border style, and a single signal-green accent used sparingly to mark what matters — status, links, and calls to action. Depth comes from panel separation, not blur or shadow. Motion is nearly absent by design: the interface should read as calm and settled, not animated.
 
-The "template" look is rejected in favor of **intentional asymmetry** and **tonal depth**. We achieve a premium feel by prioritizing extreme whitespace, high-contrast typography scales, and "Bento Box" layouts that treat information as curated artifacts rather than rows of data. This is an editorial experience for technical excellence.
+The reference is technical and editorial at once — closer to a well-designed CLI dashboard or an engineering spec sheet than a marketing site. Every surface is a flat panel; every boundary is the same 1px hairline; every accent is the same green.
 
 ---
 
 ## 2. Color & Surface Architecture
-The palette is rooted in the deep shadows of `#131313`, punctuated by the hyper-functional clarity of Cyan and Teal.
+The palette is rooted in deep graphite-blue (`#0f131a`), with a single signal-green accent (`#2fe28c`) reserved for interactive and status elements.
 
-### The "No-Line" Rule
-**Explicit Instruction:** 1px solid borders are strictly prohibited for sectioning or containment. Boundaries must be defined solely through background color shifts. 
-*   *Instead of a border:* Place a `surface_container_low` card on a `surface` background.
-*   *Instead of a divider:* Use a `2rem` (6) spacing gap or a subtle shift from `surface_container` to `surface_container_high`.
+### The "One Hairline" Rule
+**Explicit Instruction:** Every card, panel, and section boundary uses the *same* 1px border style — `border border-outline` (`#3a4453`). Never mix border-less "glow" separation with bordered separation; never introduce a second border color or width. Lower-emphasis dividers (footer rules, section dividers) use `outline-variant` (`#232a36`) instead of a second style.
 
-### Surface Hierarchy & Nesting
-Treat the UI as physical layers of frosted glass. Use the following tokens to create "stacked" depth:
-*   **Base Layer:** `surface` (#131313) or `surface_container_lowest` (#0e0e0e) for deep immersion.
-*   **Secondary Layer:** `surface_container_low` (#1c1b1b) for large content blocks.
-*   **Component Layer:** `surface_container` (#201f1f) or `surface_variant` (#353534) for interactive elements.
-*   **The Glass Rule:** For floating modals or navigation, use `surface_bright` at 60% opacity with a `20px` backdrop-blur. This allows the vibrant `primary_container` (#00d2ff) accents to bleed through the UI, creating "soul."
+### Surface Hierarchy
+*   **Base Layer:** `surface` (#0f131a) or `surface-container-lowest` (#0b0e13).
+*   **Card Layer:** `surface-container-low` (#141920) — this is what `.surface-card` uses.
+*   **Component Layer:** `surface-container` (#1a2029) or `surface-container-high` (#212836) for nested/interactive elements.
+*   No glass, no backdrop-blur, no floating "frosted" layers. Panels sit flush against the base surface, separated only by the hairline border.
 
-### Signature Textures
-Avoid flat primary colors for large areas. Main CTAs and Hero backgrounds should utilize a linear gradient: `primary` (#a5e7ff) to `primary_container` (#00d2ff) at a 135-degree angle to simulate light hitting a high-tech surface.
+### The Single Accent
+`primary` (#2fe28c, signal green) is the only accent color in the system. There is no secondary or tertiary hue — those tokens exist for API compatibility but are mapped to graphite neutrals, not a second color. Use green for: links on hover, the one active CTA, active nav/tab state, status dots, and icon emphasis. Do not use green as a large fill except on `.btn-primary`.
 
 ---
 
-## 3. Typography: High-Precision Engineering
-We pair the technical rigor of **Space Grotesk** with the Swiss-style clarity of **Inter**.
+## 3. Typography: IBM Plex
+Pair **IBM Plex Sans** (headlines & body) with **IBM Plex Mono** (labels).
 
-*   **Display & Headlines (Space Grotesk):** These are the "architectural" elements. Use `display-lg` (3.5rem) with a `-0.04em` letter-spacing to create a tight, authoritative "Editorial" header.
-*   **Body & Labels (Inter):** These are the "functional" elements. Use `body-md` (0.875rem) for technical documentation, ensuring a slightly increased line-height (1.6) to allow the "Deep Obsidian" background to breathe between lines of text.
-*   **The Logic:** Space Grotesk’s geometric quirks signal creativity and "Architect" status, while Inter ensures that complex backend logic remains perfectly legible.
+*   **Display & Headlines (IBM Plex Sans, 600–700):** `tracking-tighter` (-0.03em) on all headline sizes.
+*   **Body (IBM Plex Sans, 400):** `body-md`-equivalent copy at 1.6–1.9 line-height.
+*   **Labels & Mono (IBM Plex Mono):** Every eyebrow label, badge, nav item, timestamp, and stat caption uses the mono face, uppercase, wide tracking. This is what signals "instrument panel" over "generic SaaS site" — use it consistently, not just occasionally.
 
 ---
 
 ## 4. Elevation & Depth
-Depth is achieved through **Tonal Layering**, not structural scaffolding.
+Depth is achieved through **panel separation**, not shadow or blur.
 
-*   **The Layering Principle:** Place a `surface_container_highest` (#353534) element inside a `surface_container_low` (#1c1b1b) section to create a natural "lift."
-*   **Ambient Shadows:** If a floating effect is required (e.g., a command palette), use a shadow with a `48px` blur and `6%` opacity. The shadow color should be `surface_tint` (#47d6ff) rather than black, mimicking a subtle cyan glow.
-*   **The "Ghost Border" Fallback:** If accessibility requires a stroke, use `outline_variant` at **15% opacity**. Never use 100% opaque strokes.
-*   **Bento Box Precision:** Use `xl` (0.75rem) roundedness for Bento containers. Each box should have a slight inner-glow (a 1px top-inner-shadow) using `primary` at 10% opacity to simulate a chamfered glass edge.
+*   **No drop shadows.** Not even soft/colored ones. A panel is either on the base surface or one step up in the surface hierarchy — that's the only depth cue.
+*   **No glow.** No `box-shadow` ambient glows, no `shadow-glow` utility. If something needs to look "active" or "focused," shift its border color to `primary/50`, not its shadow.
+*   **The hover rule:** on hover, `.surface-card` shifts its border from `outline` to `primary/50`. That is the *only* interactive treatment for cards — no lift, no scale, no tilt.
 
 ---
 
 ## 5. Components
 
-### The Bento Grid
-Cards are the primary container. Forbid divider lines.
-*   **Layout:** Use asymmetrical spans (e.g., a 2-column wide card next to a 1-column tall card).
-*   **Separation:** Use `spacing-6` (2rem) as the standard gutter between Bento items to ensure "Editorial" breathing room.
+### The Flat Card
+`.surface-card` is the single card primitive for the entire site: `bg-surface-container-low`, `border border-outline`, `rounded-lg`, hover → `border-primary/50`. Every card-shaped thing (stat tile, service card, project card, testimonial, contact row, experience entry) is this class. Do not introduce a second card style, a second radius, or a second border weight.
 
 ### Interactive Elements
 *   **Buttons:**
-    *   *Primary:* Gradient fill (`primary` to `primary_container`) with `on_primary_fixed` text. No border. `md` (0.375rem) corner radius.
-    *   *Tertiary:* Ghost style. No background. Use `primary` text. On hover, apply a `surface_container_high` background shift.
-*   **Input Fields:** Use `surface_container_lowest` as the fill. The label should be `label-md` in `on_surface_variant`. Focus state is indicated by a 1px `primary` glow—not a solid border.
-*   **Chips:** Selection chips should use `secondary_container`. Use `sm` (0.125rem) roundedness for a sharper, more "engineered" look.
+    *   *Primary:* Flat `primary` fill, `on-primary` text, no border, no gradient. `md` (0.375rem) corner radius. Hover = slightly brighter fill, no transform.
+    *   *Ghost:* Transparent, `border-outline`. Hover = border shifts to `primary/60`, text to `primary`.
+*   **Badges/Chips:** `.badge` — mono, uppercase, hairline border, no filled background.
+*   **Timeline (Experience section):** a single hairline vertical rule (`bg-outline`) connects flat, bordered circular markers to `.surface-card` entries. This is the one place a connecting line is used — don't reuse the pattern elsewhere.
 
-### Reveal Animations (The Senior Backend Signature)
-*   **The "Staggered Reveal":** On page load, Bento grid items should slide up 20px and fade in with a staggered delay of 0.05s per item.
-*   **The "Line Draw":** For technical charts or accents, use a CSS `stroke-dashoffset` animation to "draw" the cyan lines when they enter the viewport.
+### Motion — Cut to One Moment
+The hero's initial entrance (a single `opacity`/`translateY` fade on mount, ~0.6s) is the *only* decorative animation on the site. Specifically avoid:
+*   Infinite/looping animations (pulsing badges, floating labels, rotating rings, marquees).
+*   Scroll-triggered reveal-on-view animations per section.
+*   Hover transforms (tilt, scale, lift, spotlight-follow-cursor).
+*   Auto-advancing carousels.
+
+Where feedback is still needed (nav active state, card hover, button hover), use a plain CSS `transition-colors` — never a spring, never a transform.
 
 ---
 
-## 6. Do’s and Don’ts
+## 6. Do's and Don'ts
 
 ### Do:
-*   **Do** use extreme whitespace. If you think there is enough room, add another `spacing-4`.
-*   **Do** mix font weights. Pair a `display-md` (Bold) with a `title-sm` (Light) to create a sophisticated hierarchy.
-*   **Do** use `primary_fixed_dim` for subtle secondary text that still needs to feel "branded."
+*   **Do** use the mono face for every small/uppercase label — it's load-bearing for the aesthetic.
+*   **Do** keep every border the same color and weight (`border-outline`, 1px).
+*   **Do** let whitespace and the surface hierarchy do the work depth used to do.
 
-### Don’t:
-*   **Don't** use 1px pure white borders. It breaks the "Monolith" immersion and feels "Bootstrap."
-*   **Don't** use pure black (#000000). Always use the `surface` tokens to maintain the "Deep Obsidian" tonal range.
-*   **Don't** use standard "Drop Shadows." They look muddy on dark themes. Use tonal shifts or ambient colored glows.
+### Don't:
+*   **Don't** add a gradient anywhere — text, buttons, or backgrounds.
+*   **Don't** add a second accent color. If something needs emphasis, use `primary` or restrained neutral weight/size, not a new hue.
+*   **Don't** add hover transforms, springs, or looping animations. If in doubt, remove the motion rather than tune it.

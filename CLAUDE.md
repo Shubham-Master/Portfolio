@@ -44,26 +44,25 @@ npm run lint       # ESLint
 
 ## Design System
 
-Strictly follows `DESIGN.md` — "The Digital Monolith" aesthetic.
+"Graphite Panel" aesthetic — flat, hairline-bordered, single-accent.
 
 **Key rules:**
-- No 1px solid borders — use background color shifts between surface tokens
-- No pure black — use `surface` (#131313) or `surface-container-lowest` (#0e0e0e)
-- No drop shadows — use `shadow-glow` (cyan ambient: `0 0 48px rgba(71,214,255,0.06)`)
-- Primary gradient: `linear-gradient(135deg, #a5e7ff 0%, #00d2ff 100%)`
+- One hairline border style everywhere — `border border-outline` (or `outline-variant` for lower-emphasis dividers). No glass/blur, no drop shadows, no glow.
+- No pure black — use `surface` (#0f131a) or `surface-container-lowest` (#0b0e13)
+- Single accent color: signal green `primary` (#2fe28c). No secondary/tertiary hues — those tokens are collapsed to graphite neutrals.
+- Flat fills only — no gradients on buttons, text, or panels.
+- Motion is intentionally minimal: the hero's one-time entrance fade is the only decorative animation on the site. Everything else renders statically; hover states are plain color transitions, not transforms/springs.
 
 **Surface hierarchy (darkest→lightest):** `surface-container-lowest` → `surface-container-low` → `surface-container` → `surface-container-high` → `surface-container-highest`
 
-**Typography:** `font-headline` = Space Grotesk (display/titles), `font-body` = Inter (paragraphs), tracking-tighter on headlines
+**Typography:** `font-headline` / `font-body` = IBM Plex Sans (headlines/paragraphs), `font-label` = IBM Plex Mono (eyebrows, badges, nav, timestamps), tracking-tighter on headlines
 
 **Reusable CSS classes** (in `globals.css`):
-- `.btn-primary` — gradient CTA button
-- `.btn-ghost` — tertiary ghost button
-- `.badge` — small label chip
-- `.surface-card` — standard bento card
-- `.inner-glow` — top-edge 1px primary glow (chamfered glass effect)
-- `.glass-card` — frosted glass with backdrop-blur
-- `.gradient-text` — cyan gradient text fill
+- `.btn-primary` — flat signal-green CTA button
+- `.btn-ghost` — hairline-border ghost button
+- `.badge` — mono label chip, hairline border
+- `.surface-card` — the one card treatment: `bg-surface-container-low` + `border-outline` hairline, hover shifts border to `primary/50`
+- `.gradient-text` — solid signal-green text (name kept for compat, no longer a gradient)
 - `.section-base` — standard section padding + max-width
 
 **Skill icons:** The `/api/skills` response returns icons as `{ light: string, dark: string }` base64 data URIs or URL strings. Always use the `dark` variant. Helper: `getIconSrc(icon: Skill["icon"])` in `components/Skills.tsx`.

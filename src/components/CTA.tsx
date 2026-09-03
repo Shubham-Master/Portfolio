@@ -17,7 +17,7 @@ const CTA = ({ btn, children, className }: ICta) => {
 
     (async function () {
       const cal = await getCalApi({});
-      cal("ui", { "theme": "dark", "styles": { "branding": { "brandColor": "#000000" } }, "hideEventTypeDetails": false, "layout": "month_view" });
+      cal("ui", { "theme": "dark", "styles": { "branding": { "brandColor": "#2FE28C" } }, "hideEventTypeDetails": false, "layout": "month_view" });
     })();
   }, [isDirectLink])
 

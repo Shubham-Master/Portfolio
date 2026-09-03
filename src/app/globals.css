@@ -10,28 +10,14 @@
   }
 
   body {
-    background-color: #111111;
-    color: #eee7dd;
-    font-family: "Avenir Next", "Segoe UI", system-ui, -apple-system, sans-serif;
+    background-color: #0f131a;
+    color: #e7eaf0;
+    font-family: var(--font-plex-sans), "IBM Plex Sans", system-ui, sans-serif;
     background-image:
-      radial-gradient(circle at top left, rgba(232, 163, 91, 0.12), transparent 24%),
-      radial-gradient(circle at top right, rgba(201, 107, 39, 0.09), transparent 24%),
-      linear-gradient(180deg, #0f0f0f 0%, #111111 30%, #0f0f0f 100%);
+      linear-gradient(rgba(143, 155, 179, 0.04) 1px, transparent 1px),
+      linear-gradient(90deg, rgba(143, 155, 179, 0.04) 1px, transparent 1px);
+    background-size: 56px 56px;
     background-attachment: fixed;
-  }
-
-  body::before {
-    content: "";
-    position: fixed;
-    inset: 0;
-    pointer-events: none;
-    background:
-      linear-gradient(rgba(255, 255, 255, 0.015) 1px, transparent 1px),
-      linear-gradient(90deg, rgba(255, 255, 255, 0.015) 1px, transparent 1px);
-    background-size: 72px 72px;
-    mask-image: radial-gradient(circle at center, black, transparent 88%);
-    opacity: 0.38;
-    z-index: -1;
   }
 
   /* Custom scrollbar */
@@ -39,38 +25,29 @@
     width: 4px;
   }
   ::-webkit-scrollbar-track {
-    background: #0e0e0e;
+    background: #0b0e13;
   }
   ::-webkit-scrollbar-thumb {
-    background: #353534;
+    background: #333d4c;
     border-radius: 2px;
   }
   ::-webkit-scrollbar-thumb:hover {
-    background: #f0a45d;
+    background: #2fe28c;
   }
 }
 
 @layer components {
-  /* Bento grid */
-  .bento-grid {
-    display: grid;
-    grid-template-columns: repeat(12, 1fr);
-    gap: 1.5rem;
+  /* The single flat card treatment: panel fill + one hairline border. */
+  .surface-card {
+    @apply relative bg-surface-container-low border border-outline rounded-lg transition-colors duration-200;
+  }
+  .surface-card:hover {
+    @apply border-primary/50;
   }
 
-  /* Glass card */
-  .glass-card {
-    background: rgba(28, 27, 27, 0.6);
-    backdrop-filter: blur(20px);
-    -webkit-backdrop-filter: blur(20px);
-  }
-
-  /* Gradient text */
+  /* Gradient text — kept as the single signal-green accent, no gradient */
   .gradient-text {
-    background: linear-gradient(135deg, #f2b36e 0%, #e0893d 55%, #b85c2e 100%);
-    -webkit-background-clip: text;
-    -webkit-text-fill-color: transparent;
-    background-clip: text;
+    @apply text-primary;
   }
 
   /* Section base */
@@ -78,45 +55,57 @@
     @apply py-24 px-4 sm:px-6 lg:px-8 max-w-6xl mx-auto;
   }
 
-  /* Primary button */
+  /* Primary button — flat signal-green fill */
   .btn-primary {
-    @apply inline-flex items-center gap-2 px-5 py-2.5 rounded-full text-on-primary-fixed font-headline font-semibold text-sm tracking-tight transition-all duration-200;
-    background: linear-gradient(135deg, #f2b36e 0%, #e0893d 55%, #b85c2e 100%);
+    @apply inline-flex items-center gap-2 px-5 py-2.5 rounded-md bg-primary text-on-primary font-headline font-semibold text-sm tracking-tight transition-colors duration-150;
   }
   .btn-primary:hover {
-    box-shadow: 0 0 30px rgba(224, 137, 61, 0.3);
-    transform: translateY(-2px);
+    background-color: #56ecab;
   }
 
-  /* Tertiary ghost button */
+  /* Tertiary ghost button — hairline border */
   .btn-ghost {
-    @apply inline-flex items-center gap-2 px-5 py-2.5 rounded-full border border-white/10 text-primary font-headline font-semibold text-sm tracking-tight transition-all duration-200 bg-white/[0.02];
+    @apply inline-flex items-center gap-2 px-5 py-2.5 rounded-md border border-outline text-on-surface font-headline font-semibold text-sm tracking-tight transition-colors duration-150;
   }
   .btn-ghost:hover {
-    @apply bg-surface-container-high;
+    @apply border-primary/60 text-primary;
   }
 
-  /* Badge */
+  /* Badge — mono label chip, hairline border */
   .badge {
-    @apply inline-flex items-center px-2.5 py-0.5 rounded-sm text-xs font-label font-medium bg-surface-container-high text-on-surface-variant;
+    @apply inline-flex items-center px-2.5 py-0.5 rounded border border-outline text-[11px] font-label font-medium uppercase tracking-wider text-on-surface-variant;
   }
 
-  /* Surface card */
-  .surface-card {
-    @apply bg-surface-container-low rounded-xl;
+  /* Orbiting focus badge — the one shared shape for every floating pill
+     around the hero photo. Only width should ever vary (by text content);
+     height, padding, radius, border, and font-size stay identical. */
+  .orbit-badge {
+    @apply absolute items-center gap-1.5 whitespace-nowrap rounded-full border border-primary/30 bg-surface-container-lowest px-3 py-1.5 text-[11px] font-label uppercase tracking-wider text-primary;
+    box-shadow: 0 0 18px rgba(47, 226, 140, 0.14);
   }
 
-  /* Inner glow top border */
-  .inner-glow {
-    box-shadow: inset 0 1px 0 rgba(240, 164, 93, 0.14);
+  /* Terminal phosphor glow — hero prompt glyphs, cursor, status dot only. Never on body copy. */
+  .terminal-glow {
+    text-shadow: 0 0 6px rgba(47, 226, 140, 0.45);
   }
 
-  .marquee-track {
-    animation: marquee-slide 22s linear infinite;
+  /* Faint scanline texture, confined to whichever panel opts in (hero terminal only). */
+  .terminal-scanlines {
+    position: relative;
   }
-
-  .hero-sheen {
-    animation: hero-sheen-shift 10s ease-in-out infinite;
+  .terminal-scanlines::before {
+    content: "";
+    position: absolute;
+    inset: 0;
+    z-index: 1;
+    pointer-events: none;
+    background-image: repeating-linear-gradient(
+      to bottom,
+      rgba(255, 255, 255, 0.05) 0px,
+      rgba(255, 255, 255, 0.05) 1px,
+      transparent 1px,
+      transparent 3px
+    );
   }
 }
 
@@ -124,52 +113,62 @@
   .text-balance {
     text-wrap: balance;
   }
-
-  /* Stagger animation delays */
-  .stagger-1 { animation-delay: 0.05s; }
-  .stagger-2 { animation-delay: 0.10s; }
-  .stagger-3 { animation-delay: 0.15s; }
-  .stagger-4 { animation-delay: 0.20s; }
-  .stagger-5 { animation-delay: 0.25s; }
-  .stagger-6 { animation-delay: 0.30s; }
 }
 
-@keyframes marquee-slide {
-  0% {
-    transform: translateX(0);
-  }
-  100% {
-    transform: translateX(-50%);
-  }
+/* Single page-level ambient glow that tracks the cursor — deliberately not
+   duplicated per-card. Negative z-index keeps it behind normal content
+   without needing to touch every section's stacking context. */
+.ambient-glow {
+  --glow-x: 50%;
+  --glow-y: 20%;
+  position: fixed;
+  inset: 0;
+  z-index: -1;
+  pointer-events: none;
+  background: radial-gradient(
+    650px circle at var(--glow-x) var(--glow-y),
+    rgba(62, 207, 142, 0.07),
+    transparent 70%
+  );
 }
 
-@keyframes divider-beam {
-  0% {
-    transform: translate(-10%, -50%);
-    opacity: 0;
-  }
-  15% {
+@keyframes blink-cursor {
+  0%,
+  50% {
     opacity: 1;
   }
-  85% {
-    opacity: 1;
-  }
+  51%,
   100% {
-    transform: translate(95vw, -50%);
     opacity: 0;
   }
 }
 
-@keyframes hero-sheen-shift {
+.blink-cursor {
+  animation: blink-cursor 1.06s step-end infinite;
+}
+
+@keyframes pulse-dot {
   0%,
   100% {
-    transform: translate3d(-8%, -2%, 0) scale(1);
+    transform: scale(1);
+    opacity: 1;
   }
   50% {
-    transform: translate3d(6%, 3%, 0) scale(1.04);
+    transform: scale(1.15);
+    opacity: 0.6;
   }
 }
 
-.animate-divider-beam {
-  animation: divider-beam 6.5s ease-in-out infinite;
+.pulse-dot {
+  animation: pulse-dot 2s ease-in-out infinite;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .blink-cursor {
+    animation: none;
+    opacity: 1;
+  }
+  .pulse-dot {
+    animation: none;
+  }
 }

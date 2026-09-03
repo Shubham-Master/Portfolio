@@ -127,16 +127,17 @@ export const experiences: Experience[] = [
   {
     company: "AirFi Aviation Solutions",
     link: "https://airfi.aero/",
-    badges: ["Bengaluru", "Embedded Fleet"],
+    badges: ["Bengaluru", "Kubernetes"],
     title: "DevOps Engineer",
     location: "Bengaluru, Karnataka, India",
     logo: "/company-logos/airfi.png",
     start: "Oct 2023",
     end: "Jul 2025",
     description: [
-      "Developed and deployed automation solutions across a fleet of 8,000+ embedded devices.",
-      "Automated firmware rollout pipelines, cutting release time by 40% across production environments.",
-      "Built telemetry-based PMIC monitoring and secure LTE-based diagnostics, improving fault detection and reducing MTTR by 35%.",
+      "Built DISCO, an internal Python tool for processing onboard infotainment box log data at scale — pulling and parsing logs from AWS S3 for fleet-wide diagnostics.",
+      "Operated and optimized AWS and Azure Kubernetes environments for production workloads.",
+      "Automated infrastructure changes with Terraform and CI-driven workflows.",
+      "Implemented monitoring and alerting improvements that reduced production outages by 40%.",
     ],
   },
   {
@@ -149,9 +150,9 @@ export const experiences: Experience[] = [
     start: "Jun 2023",
     end: "Sep 2023",
     description: [
-      "Improved reliability practices through custom tooling and hands-on monitoring improvements.",
-      "Developed internal monitoring tools to enhance observability across day-to-day operations.",
-      "Streamlined ServiceNow incident workflows to reduce escalation rates and improve support efficiency.",
+      "Improved observability and alert quality through custom tooling and hands-on monitoring improvements.",
+      "Reduced critical incident frequency by 35% through proactive monitoring and reliability practices.",
+      "Improved incident response times by 30% with better alerting and on-call workflows.",
     ],
   },
   {

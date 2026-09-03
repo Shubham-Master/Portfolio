@@ -1,7 +1,6 @@
 import { Icon } from "@iconify/react";
 import type { Contact, Me, Social } from "@/types";
 import SectionHeader from "./SectionHeader";
-import AnimateOnScroll from "./AnimateOnScroll";
 import { UTMLink } from "./UTMLink";
 import CTA from "./CTA";
 
@@ -20,15 +19,12 @@ export default function Contact({ contacts, me, socials }: ContactProps) {
         description="I'm always open to a good conversation around platform engineering, DevOps, cloud infrastructure, or interesting production problems."
       />
 
-      <div className="grid grid-cols-1 lg:grid-cols-5 gap-8">
+      <div className="grid grid-cols-1 lg:grid-cols-5 gap-6">
         {/* Contact info — 2 cols */}
-        <AnimateOnScroll className="lg:col-span-2 flex flex-col gap-4" direction="left">
+        <div className="lg:col-span-2 flex flex-col gap-4">
           {contacts.map((contact) => (
-            <div
-              key={contact.title}
-              className="flex items-center gap-4 bg-surface-container-low rounded-2xl p-5 inner-glow"
-            >
-              <div className="w-10 h-10 rounded-xl bg-surface-container flex items-center justify-center flex-shrink-0">
+            <div key={contact.title} className="surface-card flex items-center gap-4 p-5">
+              <div className="w-10 h-10 rounded border border-outline flex items-center justify-center flex-shrink-0">
                 <Icon icon={contact.icon} width={18} className="text-primary" />
               </div>
               <div>
@@ -52,18 +48,17 @@ export default function Contact({ contacts, me, socials }: ContactProps) {
           ))}
 
           {/* Social links */}
-          <div className="bg-surface-container-low rounded-2xl p-5 inner-glow">
+          <div className="surface-card p-5">
             <p className="font-label text-xs text-on-surface-variant mb-3">
               Find me on
             </p>
             <div className="flex flex-wrap gap-2">
               {socials.map((social) => (
                 <UTMLink
-
                   key={social.name}
                   href={social.href}
                   aria-label={social.name}
-                  className="flex items-center gap-2 px-3 py-2 rounded-lg bg-surface-container text-on-surface-variant hover:text-primary hover:bg-surface-container-high transition-all duration-200 text-xs font-label"
+                  className="flex items-center gap-2 px-3 py-2 rounded border border-outline text-on-surface-variant hover:text-primary hover:border-primary/60 transition-colors duration-150 text-xs font-label"
                 >
                   <Icon icon={social.icon} width={16} />
                   {social.name}
@@ -71,26 +66,12 @@ export default function Contact({ contacts, me, socials }: ContactProps) {
               ))}
             </div>
           </div>
-        </AnimateOnScroll>
+        </div>
 
         {/* CTA card — 3 cols */}
-        <AnimateOnScroll className="lg:col-span-3" delay={0.1}>
-          <div
-            className="h-full rounded-2xl p-8 flex flex-col justify-between gap-8 relative overflow-hidden"
-            style={{
-              background:
-                "linear-gradient(135deg, rgba(242,179,110,0.08) 0%, rgba(224,137,61,0.08) 55%, rgba(184,92,46,0.08) 100%)",
-            }}
-          >
-            {/* Ambient glow */}
-            <div
-              className="absolute -top-8 -right-8 w-48 h-48 rounded-full opacity-10 pointer-events-none"
-              style={{
-                background: "radial-gradient(circle, #e0893d 0%, transparent 70%)",
-              }}
-            />
-
-            <div className="relative">
+        <div className="lg:col-span-3">
+          <div className="h-full rounded-lg border border-primary/30 bg-primary/[0.04] p-8 flex flex-col justify-between gap-8">
+            <div>
               <h3 className="font-headline font-bold text-2xl tracking-tighter text-on-surface mb-3">
                 Have something interesting in mind?
               </h3>
@@ -99,11 +80,8 @@ export default function Contact({ contacts, me, socials }: ContactProps) {
               </p>
             </div>
 
-            <div className="relative flex flex-col sm:flex-row gap-3">
-              <CTA
-                btn={`${me.cal}`}
-                className="btn-primary justify-center"
-              >
+            <div className="flex flex-col sm:flex-row gap-3">
+              <CTA btn={`${me.cal}`} className="btn-primary justify-center">
                 <Icon icon="ion:calendar-outline" width={16} />
                 Book a call
               </CTA>
@@ -113,7 +91,7 @@ export default function Contact({ contacts, me, socials }: ContactProps) {
               </UTMLink>
             </div>
           </div>
-        </AnimateOnScroll>
+        </div>
       </div>
     </section>
   );

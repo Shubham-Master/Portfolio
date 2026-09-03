@@ -1,9 +1,6 @@
 import { Icon } from "@iconify/react";
 import type { Me, Contact, Experience } from "@/types";
 import SectionHeader from "./SectionHeader";
-import AnimateOnScroll from "./AnimateOnScroll";
-import { StaggerContainer, StaggerItem } from "./AnimateOnScroll";
-import InteractiveCard from "./InteractiveCard";
 
 interface AboutProps {
   me: Me;
@@ -45,46 +42,40 @@ export default function About({ me, contacts, experience }: AboutProps) {
       />
 
       {/* Stats row */}
-      <StaggerContainer className="grid grid-cols-2 sm:grid-cols-4 gap-3 mb-8">
+      <div className="grid grid-cols-2 sm:grid-cols-4 gap-3 mb-8">
         {STATS.map((stat) => (
-          <StaggerItem key={stat.label}>
-            <InteractiveCard className="bg-surface-container-low rounded-xl p-4 inner-glow text-center">
-              <p className="font-headline font-bold text-2xl tracking-tighter gradient-text">
-                {stat.value}
-              </p>
-              <p className="font-label text-xs text-on-surface-variant mt-1">
-                {stat.label}
-              </p>
-            </InteractiveCard>
-          </StaggerItem>
+          <div key={stat.label} className="surface-card p-4 text-center">
+            <p className="font-headline font-bold text-2xl tracking-tighter text-primary">
+              {stat.value}
+            </p>
+            <p className="font-label text-xs text-on-surface-variant mt-1">
+              {stat.label}
+            </p>
+          </div>
         ))}
-      </StaggerContainer>
+      </div>
 
-      <AnimateOnScroll className="grid grid-cols-1 lg:grid-cols-2 gap-6" delay={0.1}>
+      <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
         {/* Bio card */}
-        <InteractiveCard className="bg-surface-container-low rounded-2xl p-7 inner-glow">
+        <div className="surface-card p-7">
           <h3 className="font-headline font-bold text-xl tracking-tighter text-on-surface mb-4">
             {me.about}
           </h3>
           <p className="font-body text-sm leading-[1.8] text-on-surface-variant whitespace-pre-line">
             {me.summaryLong ?? me.summary}
           </p>
-        </InteractiveCard>
+        </div>
 
         {/* Contact info */}
-        <InteractiveCard className="bg-surface-container-low rounded-2xl p-7 inner-glow">
+        <div className="surface-card p-7">
           <h4 className="font-headline font-semibold text-sm tracking-tight text-on-surface mb-5">
             Contact Details
           </h4>
           <div className="flex flex-col gap-4">
             {contacts.map((contact) => (
               <div key={contact.title} className="flex items-center gap-3">
-                <div className="flex-shrink-0 w-9 h-9 rounded-lg bg-surface-container flex items-center justify-center">
-                  <Icon
-                    icon={contact.icon}
-                    width={16}
-                    className="text-primary"
-                  />
+                <div className="flex-shrink-0 w-9 h-9 rounded border border-outline flex items-center justify-center">
+                  <Icon icon={contact.icon} width={16} className="text-primary" />
                 </div>
                 <div>
                   <p className="font-label text-xs text-on-surface-variant">
@@ -106,8 +97,8 @@ export default function About({ me, contacts, experience }: AboutProps) {
               </div>
             ))}
           </div>
-        </InteractiveCard>
-      </AnimateOnScroll>
+        </div>
+      </div>
     </section>
   );
 }

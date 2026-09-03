@@ -1,7 +1,5 @@
 import type { Skill } from "@/types";
 import SectionHeader from "./SectionHeader";
-import { StaggerContainer, StaggerItem } from "./AnimateOnScroll";
-import InteractiveCard from "./InteractiveCard";
 
 interface SkillsProps {
   skills: Skill[];
@@ -67,37 +65,34 @@ export default function Skills({ skills }: SkillsProps) {
             <p className="font-label text-xs font-semibold tracking-widest uppercase text-on-surface-variant mb-4">
               {CATEGORY_LABELS[category] ?? category}
             </p>
-            <StaggerContainer className="flex flex-wrap gap-2.5">
+            <div className="flex flex-wrap gap-2.5">
               {items.map((skill) => {
                 const iconSrc = getIconSrc(skill.icon);
                 return (
-                  <StaggerItem key={skill.skill}>
-                    <InteractiveCard className="inline-flex rounded-xl bg-surface-container-low inner-glow hover:bg-surface-container hover:shadow-glow">
-                      <a
-                        href={skill.href !== "/" ? skill.href : undefined}
-                        target="_blank"
-                        rel="noopener noreferrer"
-                        className="inline-flex items-center gap-2 px-3.5 py-2 transition-all duration-200 group"
-                      >
-                        {iconSrc && (
-                          // eslint-disable-next-line @next/next/no-img-element
-                          <img
-                            src={iconSrc}
-                            alt={skill.skill}
-                            width={16}
-                            height={16}
-                            className="object-contain flex-shrink-0"
-                          />
-                        )}
-                        <span className="font-label text-sm text-on-surface-variant group-hover:text-on-surface transition-colors">
-                          {skill.skill}
-                        </span>
-                      </a>
-                    </InteractiveCard>
-                  </StaggerItem>
+                  <a
+                    key={skill.skill}
+                    href={skill.href !== "/" ? skill.href : undefined}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="surface-card inline-flex items-center gap-2 px-3.5 py-2 group"
+                  >
+                    {iconSrc && (
+                      // eslint-disable-next-line @next/next/no-img-element
+                      <img
+                        src={iconSrc}
+                        alt={skill.skill}
+                        width={16}
+                        height={16}
+                        className="object-contain flex-shrink-0"
+                      />
+                    )}
+                    <span className="font-label text-sm text-on-surface-variant group-hover:text-on-surface transition-colors">
+                      {skill.skill}
+                    </span>
+                  </a>
                 );
               })}
-            </StaggerContainer>
+            </div>
           </div>
         ))}
       </div>

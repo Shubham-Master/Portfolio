@@ -20,7 +20,7 @@ const FOOTER_LINKS = [
 
 export default function Footer({ me, socials, nav }: FooterProps) {
   return (
-    <footer className="border-t border-outline-variant/10 bg-surface-container-lowest">
+    <footer className="border-t border-outline-variant bg-surface-container-lowest">
       <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
         <div className="grid grid-cols-1 sm:grid-cols-3 gap-8 mb-10">
           {/* Brand */}
@@ -78,7 +78,7 @@ export default function Footer({ me, socials, nav }: FooterProps) {
           </div>
         </div>
 
-        <div className="border-t border-outline-variant/10 pt-6 flex flex-col sm:flex-row items-center justify-between gap-3">
+        <div className="border-t border-outline-variant pt-6 flex flex-col sm:flex-row items-center justify-between gap-3">
           <p className="font-body text-xs text-on-surface-variant">
             © {new Date().getFullYear()} {me.name}. All rights reserved.
           </p>
