@@ -22,14 +22,14 @@ export const me: Me = {
   locationLink: "https://www.google.com/maps/place/Gurugram,+Haryana,+India",
   about: "Cloud Platform Engineer | DevOps, Kubernetes & Automation",
   summary:
-    "Cloud and DevOps engineer with 7+ years of experience building scalable, automated, and reliable infrastructure across AWS, Azure, and GCP. Focused on Kubernetes, CI/CD automation, infrastructure as code, observability, and platform reliability for distributed systems.",
+    "Cloud Platform Engineer / Site Reliability Engineer with 7+ years in DevOps and cloud infrastructure fundamentals — Kubernetes, infrastructure as code, multi-cloud operations. I'm now increasingly focused on production AI/LLM platform work: AWS Bedrock with Claude models, RAG pipelines, and AI-assisted incident response, alongside FinOps cost optimization and Zero Trust security.",
   summaryLong:
-    "I'm a Cloud and DevOps Engineer with hands-on experience in building scalable, automated, and reliable infrastructure across AWS, Azure, and GCP. I specialize in containerization, Kubernetes operations, CI/CD automation, and infrastructure as code, helping teams ship faster while improving reliability.\n\nMy focus is on designing secure, observable, and sustainable systems that perform consistently in production. I bring a mix of cloud architecture, automation, and reliability engineering to every environment I work on.\n\nHaving worked across multi-cloud and embedded-cloud integrations, I thrive in collaborative setups that balance innovation, performance, and long-term maintainability.",
+    "I started where most infrastructure careers do: cloud fundamentals. Kubernetes operations, infrastructure as code, CI/CD automation, and multi-cloud reliability work across AWS, Azure, and GCP. That foundation is still how I think about systems — observable, automated, and boring in the best way.\n\nWhat's changed is where I'm pointing that foundation. Over the past year, as a Cloud Platform Engineer, I've been increasingly focused on building and operating production AI tooling on AWS Bedrock with Claude models — including a RAG-based auto-triage agent and an AI-assisted incident RCA tool, both deliberately human-gated rather than fully autonomous. I pair that with FinOps cost governance and Zero Trust identity (Keycloak, OIDC/OAuth2) — the unglamorous platform work that has to be solid before you can trust an AI system to touch production.\n\nThat's the direction I'm building toward: applying DevOps discipline — guardrails, observability, human-in-the-loop review — to systems that increasingly involve LLMs in the operational path.",
   avatarUrl: "https://avatars.githubusercontent.com/u/155751376?v=4",
   personalWebsiteUrl: "https://cv-topaz-psi.vercel.app/",
   cta: {
     message:
-      "Open to conversations about platform engineering, DevOps automation, cloud reliability, and distributed systems.",
+      "Open to conversations about AI platform operations, DevOps automation, FinOps, and cloud reliability at scale.",
     btn: BOOK_A_CALL_LINK,
   },
 };
@@ -38,7 +38,7 @@ export const nav: Nav = {
   cal: BOOK_A_CALL_LINK,
   resume: "https://cv-topaz-psi.vercel.app/",
   footer_note:
-    "Building reliable cloud platforms, automation workflows, and production systems that scale.",
+    "DevOps-rooted, increasingly focused on AI platform operations.",
 };
 
 export const socials: Social[] = [
@@ -95,31 +95,33 @@ export const experiences: Experience[] = [
   {
     company: "SingleStore",
     link: "https://www.singlestore.com/",
-    badges: ["Remote", "Platform Engineering"],
+    badges: ["Remote", "AI Platform"],
     title: "Cloud Platform Engineer",
     location: "Remote",
     logo: "/company-logos/singlestore.png",
     start: "Feb 2026",
     end: null,
     description: [
-      "Building cloud platform capabilities focused on infrastructure automation, Kubernetes operations, and developer productivity.",
-      "Contributing to reliable delivery workflows, platform tooling, and operational standards for distributed engineering teams.",
-      "Working across cloud infrastructure, observability, and secure systems operations in a remote-first setup.",
+      "Designed and built ATLAS, an internal operational-intelligence platform (Airflow, SingleStore, Next.js) used daily by Support, Engineering, and Leadership to track SLA risk and recurring issues.",
+      "Built production AI tooling on AWS Bedrock (Claude 3/3.5) — an AI-assisted incident RCA tool on Grafana MCP and a guardrailed RAG auto-triage agent, both human-gated by design.",
+      "Implemented GPU-backed autoscaling on EKS using Karpenter, cutting ML infrastructure cost by 35%+ (utilization ~25% to 65%), measured via Kubecost against real AWS billing.",
+      "Own the production Keycloak identity platform (Zero Trust, OIDC/OAuth2) serving ~150 daily internal users.",
+      "Contribute Go backend code to an internal multi-cloud cost-governance (FinOps) platform.",
     ],
   },
   {
     company: "AirFi Aviation Solutions",
     link: "https://airfi.aero/",
     badges: ["Bengaluru", "Promotion"],
-    title: "Senior Software Engineer",
+    title: "Senior DevOps Engineer",
     location: "Bengaluru, Karnataka, India",
     logo: "/company-logos/airfi.png",
     start: "Aug 2025",
-    end: "Mar 2026",
+    end: "Feb 2026",
     description: [
-      "Promoted to Senior Software Engineer to lead platform reliability, infrastructure automation, and release enablement initiatives.",
-      "Drove improvements across CI/CD, observability, and production workflows to strengthen release reliability and incident response.",
-      "Collaborated closely with QA, backend, and device teams to improve deployment confidence across production-critical systems.",
+      "Led an uptime initiative that raised platform availability from 97.8% to 99.95%.",
+      "Cut incident resolution time by 45%+ through centralized observability and standardized runbooks.",
+      "Mentored junior engineers and set incident-response and IaC standards adopted across every team on the shared platform.",
     ],
   },
   {
@@ -170,16 +172,16 @@ export const experiences: Experience[] = [
   {
     company: "Extreme Soft Management",
     link: "",
-    badges: ["Ranchi", "Automation"],
+    badges: ["Ranchi", "GCP"],
     title: "Software Engineer",
     location: "Ranchi, Jharkhand, India",
     logo: "/company-logos/extreme-soft.svg",
     start: "Apr 2019",
-    end: "Sep 2021",
+    end: "Aug 2021",
     description: [
-      "Maintained production systems and introduced automation for repetitive infrastructure and operational tasks.",
+      "Operated and maintained production infrastructure on Google Cloud Platform (GCP), introducing automation for repetitive operational tasks.",
+      "Led a year-long GCP-to-AWS migration, modernizing the deployment stack end-to-end.",
       "Automated workflows that saved 80+ engineering hours per month across recurring processes.",
-      "Improved uptime through system hardening, deployment standardization, and Linux-based operational support.",
     ],
   },
 ];
@@ -213,6 +215,12 @@ export const skills: Skill[] = [
     href: "https://en.wikipedia.org/wiki/C_(programming_language)",
     icon: "https://raw.githubusercontent.com/devicons/devicon/master/icons/c/c-original.svg",
     skill: "Embedded C",
+    category: "programming language",
+  },
+  {
+    href: "https://www.php.net/",
+    icon: "https://raw.githubusercontent.com/devicons/devicon/master/icons/php/php-original.svg",
+    skill: "PHP",
     category: "programming language",
   },
   {
@@ -256,6 +264,24 @@ export const skills: Skill[] = [
     icon: "https://uxwing.com/wp-content/themes/uxwing/download/brands-and-social-media/elasticsearch-icon.png",
     skill: "Elasticsearch",
     category: "databases",
+  },
+  {
+    href: "/",
+    icon: "",
+    skill: "AWS Bedrock / LLM Ops",
+    category: "Specializations",
+  },
+  {
+    href: "/",
+    icon: "",
+    skill: "FinOps / Cost Optimization",
+    category: "Specializations",
+  },
+  {
+    href: "/",
+    icon: "",
+    skill: "Keycloak / Zero Trust IAM",
+    category: "Specializations",
   },
   {
     href: "/",
@@ -351,32 +377,32 @@ export const skills: Skill[] = [
 
 export const services: Service[] = [
   {
-    title: "Platform Engineering & Cloud Architecture",
+    title: "Platform Engineering & Multi-Cloud Architecture",
     icon: "ion:layers-outline",
     description:
-      "Designing secure, scalable cloud platforms across AWS, Azure, and GCP with a strong focus on maintainability and developer enablement.",
+      "Designing secure, scalable cloud platforms across AWS, Azure, and GCP — Kubernetes, infrastructure as code, and CI/CD, with a strong focus on maintainability.",
   },
   {
-    title: "CI/CD & Release Automation",
-    icon: "ion:git-compare-outline",
+    title: "AI Platform Operations & FinOps",
+    icon: "ion:hardware-chip-outline",
     description:
-      "Building automation pipelines that improve release confidence, reduce cycle time, and standardize deployments across teams and environments.",
+      "Operating production AI/LLM tooling on AWS Bedrock (Claude models) — RAG pipelines and AI-assisted incident response, human-gated by design — alongside cost governance and FinOps.",
   },
   {
-    title: "Reliability, Monitoring & Incident Response",
+    title: "Reliability, Zero Trust & Incident Response",
     icon: "ion:pulse-outline",
     description:
-      "Improving uptime, observability, and operational readiness through monitoring, alerting, diagnostics, and long-term reliability fixes.",
+      "Improving uptime and operational readiness through centralized observability and runbooks, backed by Zero Trust identity (Keycloak, OIDC/OAuth2).",
   },
 ];
 
 export const projects: Project[] = [
   {
-    title: "Kubernetes Platform Engineering",
+    title: "k8s-gitops-platform",
     link: "https://github.com/Shubham-Master/k8s-gitops-platform",
     description:
-      "Designed and operated a production Kubernetes platform on AWS, including automated cluster provisioning with Terraform, GitOps-based deployments via Argo CD, and Helm-managed application lifecycles.",
-    stack: ["Kubernetes", "Terraform", "AWS", "Helm", "Argo CD"],
+      "Production Kubernetes platform on AWS with automated cluster provisioning (Terraform) and GitOps deployments (Argo CD). Full observability stack — Prometheus, Grafana, Loki, and Tempo — for metrics, logs, and traces.",
+    stack: ["Kubernetes", "Terraform", "AWS", "Argo CD", "Prometheus", "Grafana", "Loki", "Tempo"],
   },
 ];
 
@@ -463,20 +489,31 @@ export const testimonials: Testimonial[] = [
   },
 ];
 
-export const certificates: Certificate[] = [];
+export const certificates: Certificate[] = [
+  {
+    title: "Certified Kubernetes Administrator (CKA)",
+    issuer: "Linux Foundation / CNCF",
+    issuerIcon:
+      "https://raw.githubusercontent.com/devicons/devicon/master/icons/kubernetes/kubernetes-plain.svg",
+    issuedAt: "Expected Dec 2026",
+    link: "https://training.linuxfoundation.org/certification/certified-kubernetes-administrator-cka/",
+  },
+];
 
 export const siteMetadata = {
   title: "Shubham Kumar | Cloud Platform Engineer",
   description:
-    "Cloud Platform Engineer focused on DevOps, Kubernetes, automation, and reliable cloud infrastructure across distributed systems.",
+    "Cloud Platform Engineer and Site Reliability Engineer with a DevOps foundation, now increasingly focused on AI Platform Operations, FinOps, Kubernetes, and Multi-Cloud infrastructure.",
   keywords: [
     "Shubham Kumar",
     "Cloud Platform Engineer",
+    "Site Reliability Engineer",
     "DevOps Engineer",
+    "AI-Ops",
+    "AI Platform Operations",
+    "FinOps",
     "Kubernetes",
-    "Platform Engineering",
-    "AWS",
-    "CI/CD",
-    "Site Reliability Engineering",
+    "Multi-Cloud",
+    "AWS Bedrock",
   ],
 };

@@ -18,7 +18,9 @@ export default function Certificates({ certificates }: CertificatesProps) {
       />
 
       <StaggerContainer className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-5">
-        {certificates.map((cert, idx) => (
+        {certificates.map((cert, idx) => {
+          const isUpcoming = /^expected/i.test(cert.issuedAt);
+          return (
           <StaggerItem key={`${cert.title}-${idx}`}>
             <a
               href={cert.link}
@@ -56,14 +58,15 @@ export default function Certificates({ certificates }: CertificatesProps) {
                 {cert.title}
               </p>
 
-              {/* Verified badge */}
+              {/* Status badge */}
               <div className="mt-auto flex items-center gap-1.5 text-xs font-label text-primary/70">
-                <Icon icon="ion:checkmark-circle-outline" width={14} />
-                Verified Certificate
+                <Icon icon={isUpcoming ? "ion:time-outline" : "ion:checkmark-circle-outline"} width={14} />
+                {isUpcoming ? "In Progress" : "Verified Certificate"}
               </div>
             </a>
           </StaggerItem>
-        ))}
+          );
+        })}
       </StaggerContainer>
     </section>
   );
