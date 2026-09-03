@@ -1,12 +1,13 @@
 "use client";
 
-import { useRef } from "react";
+import { useEffect, useRef, useState } from "react";
 import { motion, useInView } from "framer-motion";
 import type { Experience } from "@/types";
 import SectionHeader from "./SectionHeader";
 import { UTMLink } from "./UTMLink";
 import AnimatedMetric from "./AnimatedMetric";
 import { usePrefersReducedMotion } from "@/hooks/usePrefersReducedMotion";
+import { KONAMI_EVENT } from "./KonamiEasterEgg";
 
 interface ExperienceProps {
   experiences: Experience[];
@@ -36,12 +37,18 @@ const INNOITUS_METRICS: Metric[] = [
   { label: "Faster Response", from: 0, to: 30, suffix: "%" },
 ];
 
+const EXTREME_SOFT_METRICS: Metric[] = [
+  { label: "Fewer Environment Issues", from: 0, to: 50, suffix: "%" },
+  { label: "Hours Saved / Month", from: 0, to: 80, suffix: "+" },
+];
+
 function getMetricsFor(exp: Experience): Metric[] | null {
   if (exp.company === "SingleStore") return SINGLESTORE_METRICS;
   if (exp.company === "AirFi Aviation Solutions" && exp.title === "Senior DevOps Engineer") {
     return AIRFI_SENIOR_METRICS;
   }
   if (exp.company === "Innoitus") return INNOITUS_METRICS;
+  if (exp.company === "Extreme Soft Management") return EXTREME_SOFT_METRICS;
   return null;
 }
 
@@ -51,6 +58,21 @@ export default function ExperienceSection({ experiences }: ExperienceProps) {
   const isInView = useInView(sectionRef, { once: true, margin: "-100px" });
   const reduceMotion = usePrefersReducedMotion();
   const revealed = reduceMotion || isInView;
+
+  const [celebrate, setCelebrate] = useState(false);
+  useEffect(() => {
+    let timeoutId: number | undefined;
+    function onUnlock() {
+      setCelebrate(true);
+      window.clearTimeout(timeoutId);
+      timeoutId = window.setTimeout(() => setCelebrate(false), 2200);
+    }
+    window.addEventListener(KONAMI_EVENT, onUnlock);
+    return () => {
+      window.removeEventListener(KONAMI_EVENT, onUnlock);
+      window.clearTimeout(timeoutId);
+    };
+  }, []);
 
   const lineDuration = 1.1;
   const nodeStagger = visible.length > 0 ? Math.min(lineDuration / visible.length, 0.16) : 0.13;
@@ -84,7 +106,7 @@ export default function ExperienceSection({ experiences }: ExperienceProps) {
             hidden: {},
           }}
         >
-          {visible.map((exp) => {
+          {visible.map((exp, idx) => {
             const isCurrent = exp.end === null;
             const metrics = getMetricsFor(exp);
 
@@ -97,7 +119,8 @@ export default function ExperienceSection({ experiences }: ExperienceProps) {
                       hidden: { borderColor: "#3a4453", backgroundColor: "rgba(20,25,32,1)" },
                       visible: { borderColor: "#2fe28c", backgroundColor: "rgba(47,226,140,0.08)" },
                     }}
-                    className="relative w-12 h-12 rounded-full flex items-center justify-center flex-shrink-0 border"
+                    style={celebrate ? { animationDelay: `${idx * 80}ms` } : undefined}
+                    className={`relative w-12 h-12 rounded-full flex items-center justify-center flex-shrink-0 border ${celebrate ? "celebrate-pulse" : ""}`}
                   >
                     {exp.logo ? (
                       // eslint-disable-next-line @next/next/no-img-element

@@ -163,7 +163,7 @@ export const experiences: Experience[] = [
     location: "Bengaluru, Karnataka, India",
     logo: "/company-logos/amazon.png",
     start: "Oct 2021",
-    end: "May 2023",
+    end: "Jun 2023",
     description: [
       "Built Jenkins pipelines integrating Prometheus and Grafana dashboards for better pipeline and environment visibility.",
       "Managed AWS-based environments with a focus on scalability, uptime, and dependable delivery workflows.",
@@ -174,7 +174,7 @@ export const experiences: Experience[] = [
     company: "Extreme Soft Management",
     link: "",
     badges: ["Ranchi", "GCP"],
-    title: "Software Engineer",
+    title: "Site Reliability Engineer",
     location: "Ranchi, Jharkhand, India",
     logo: "/company-logos/extreme-soft.svg",
     start: "Apr 2019",
@@ -210,12 +210,6 @@ export const skills: Skill[] = [
     href: "https://www.gnu.org/software/bash/",
     icon: "https://uxwing.com/wp-content/themes/uxwing/download/brands-and-social-media/bash-unix-shell-icon.png",
     skill: "Bash",
-    category: "programming language",
-  },
-  {
-    href: "https://en.wikipedia.org/wiki/C_(programming_language)",
-    icon: "https://raw.githubusercontent.com/devicons/devicon/master/icons/c/c-original.svg",
-    skill: "Embedded C",
     category: "programming language",
   },
   {

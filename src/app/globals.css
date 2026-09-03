@@ -76,14 +76,6 @@
     @apply inline-flex items-center px-2.5 py-0.5 rounded border border-outline text-[11px] font-label font-medium uppercase tracking-wider text-on-surface-variant;
   }
 
-  /* Orbiting focus badge — the one shared shape for every floating pill
-     around the hero photo. Only width should ever vary (by text content);
-     height, padding, radius, border, and font-size stay identical. */
-  .orbit-badge {
-    @apply absolute items-center gap-1.5 whitespace-nowrap rounded-full border border-primary/30 bg-surface-container-lowest px-3 py-1.5 text-[11px] font-label uppercase tracking-wider text-primary;
-    box-shadow: 0 0 18px rgba(47, 226, 140, 0.14);
-  }
-
   /* Terminal phosphor glow — hero prompt glyphs, cursor, status dot only. Never on body copy. */
   .terminal-glow {
     text-shadow: 0 0 6px rgba(47, 226, 140, 0.45);
@@ -163,12 +155,33 @@
   animation: pulse-dot 2s ease-in-out infinite;
 }
 
+/* Konami-code celebration — a one-off "all systems green" burst on the
+   Experience timeline nodes. Triggered once, never loops. */
+@keyframes celebrate-pulse {
+  0% {
+    box-shadow: 0 0 0 0 rgba(47, 226, 140, 0.6);
+  }
+  60% {
+    box-shadow: 0 0 0 12px rgba(47, 226, 140, 0);
+  }
+  100% {
+    box-shadow: 0 0 0 0 rgba(47, 226, 140, 0);
+  }
+}
+
+.celebrate-pulse {
+  animation: celebrate-pulse 0.9s ease-out;
+}
+
 @media (prefers-reduced-motion: reduce) {
   .blink-cursor {
     animation: none;
     opacity: 1;
   }
   .pulse-dot {
+    animation: none;
+  }
+  .celebrate-pulse {
     animation: none;
   }
 }

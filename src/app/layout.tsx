@@ -3,6 +3,7 @@ import { IBM_Plex_Sans, IBM_Plex_Mono } from "next/font/google";
 import { me, siteMetadata } from "@/lib/portfolio-data";
 import shubhamPhoto from "@/images/shubham-photo.jpeg";
 import AmbientGlow from "@/components/AmbientGlow";
+import KonamiEasterEgg from "@/components/KonamiEasterEgg";
 import "./globals.css";
 
 const plexSans = IBM_Plex_Sans({
@@ -66,6 +67,7 @@ export default function RootLayout({
     <html lang="en" className={`dark ${plexSans.variable} ${plexMono.variable}`}>
       <body className="antialiased bg-surface text-on-surface font-body">
         <AmbientGlow />
+        <KonamiEasterEgg />
         {children}
       </body>
     </html>

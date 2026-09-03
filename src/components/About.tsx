@@ -29,7 +29,7 @@ function getYearsOfExperience(experience: Experience[]): string {
 export default function About({ me, contacts, experience }: AboutProps) {
   const STATS = [
     { value: getYearsOfExperience(experience), label: "Years Experience" },
-    { value: "8K+", label: "Devices Supported" },
+    { value: "40%", label: "Fewer Production Outages" },
     { value: "50%", label: "Faster Releases" },
     { value: "80+", label: "Hours Saved / Month" },
   ];
