@@ -66,6 +66,7 @@ const HELP_LINES = [
 ];
 
 const HIGHLIGHTS = [
+  "AI Platform Operations",
   "Kubernetes Platform Engineering",
   "CI/CD Automation",
   "Observability & Incident Response",
@@ -73,12 +74,6 @@ const HIGHLIGHTS = [
 ];
 
 const MICRO_PROOFS = ["Remote-friendly", "Platform-first mindset", "Built for production"];
-
-const ORBIT_BADGES = [
-  { label: "AWS Bedrock", className: "-left-6 top-14" },
-  { label: "FinOps", className: "-right-6 top-1/3" },
-  { label: "Kubernetes", className: "left-10 -bottom-4" },
-];
 
 function wait(ms: number): Promise<void> {
   return new Promise((resolve) => setTimeout(resolve, ms));
@@ -177,6 +172,16 @@ export default function Hero({ me, socials, nav, experience }: HeroProps) {
       scrollToSection(id, !reduceMotion);
     }
 
+    if (cmd.startsWith("rm -rf")) {
+      newLines.push(
+        { kind: "out", text: "Nice try. Permission denied — that file is staying put." },
+        { kind: "out", text: "Type 'resume' to actually open it." }
+      );
+      setHistory((h) => [...h, ...newLines]);
+      setInput("");
+      return;
+    }
+
     switch (cmd) {
       case "help":
         newLines.push(...HELP_LINES.map((text) => ({ kind: "out" as const, text })));
@@ -217,6 +222,24 @@ export default function Hero({ me, socials, nav, experience }: HeroProps) {
         setHistory([]);
         setInput("");
         return;
+      case "sudo make-coffee":
+        newLines.push(
+          { kind: "out", text: "Brewing..." },
+          { kind: "out", text: "418 I'm a teapot — try 'chai' instead." }
+        );
+        break;
+      case "chai":
+        newLines.push({ kind: "out", text: "Now we're talking. Back to work — type 'help' for real commands." });
+        break;
+      case "git blame":
+        newLines.push({ kind: "out", text: "100% Shubham Kumar. No excuses, no blame-shifting — just fixes." });
+        break;
+      case "sl":
+        newLines.push({ kind: "out", text: "Choo choo. (You meant 'ls', right?)" });
+        break;
+      case "ls":
+        newLines.push({ kind: "out", text: "about  experience  skills  projects  contact  (no todos hidden)" });
+        break;
       default:
         newLines.push({ kind: "out", text: `bash: ${raw}: command not found — type 'help'` });
     }
@@ -227,7 +250,7 @@ export default function Hero({ me, socials, nav, experience }: HeroProps) {
 
   const stats = [
     { to: getYearsOfExperience(experience), suffix: "+", label: "Years building in production" },
-    { to: 8, suffix: "K+", label: "Embedded devices supported" },
+    { to: 40, suffix: "%", label: "Fewer production outages" },
     { to: 50, suffix: "%", label: "Faster release workflows" },
     { to: 80, suffix: "+", label: "Hours saved each month" },
   ];
@@ -351,7 +374,7 @@ export default function Hero({ me, socials, nav, experience }: HeroProps) {
           </div>
 
           <div className="flex justify-center lg:justify-end">
-            <div className="relative w-full max-w-[400px] mt-6 mb-10 lg:mt-2 lg:mb-6">
+            <div className="w-full max-w-[400px] mt-6 lg:mt-0">
               <div className="relative overflow-hidden rounded-lg border border-outline bg-surface-container-low">
                 <div className="relative aspect-[4/5] overflow-hidden">
                   <Image
@@ -363,25 +386,6 @@ export default function Hero({ me, socials, nav, experience }: HeroProps) {
                     sizes="(max-width: 640px) 85vw, (max-width: 1024px) 420px, 420px"
                   />
                 </div>
-              </div>
-
-              {/* Orbiting focus badges */}
-              {ORBIT_BADGES.map((badge) => (
-                <span
-                  key={badge.label}
-                  className={`orbit-badge hidden lg:inline-flex ${badge.className}`}
-                >
-                  <span className="h-1.5 w-1.5 rounded-full bg-primary" />
-                  {badge.label}
-                </span>
-              ))}
-
-              {/* Floating stat callout */}
-              <div className="surface-card absolute -bottom-8 right-4 sm:right-6 border-primary/30 px-5 py-5 shadow-[0_0_24px_rgba(47,226,140,0.12)]">
-                <p className="font-headline text-2xl font-bold tracking-tight text-primary">~150</p>
-                <p className="mt-1 max-w-[170px] font-body text-xs leading-relaxed text-on-surface-variant">
-                  Daily users on the Zero Trust IAM platform
-                </p>
               </div>
             </div>
           </div>
