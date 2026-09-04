@@ -74,7 +74,7 @@ export const contacts: Contact[] = [
   {
     title: "Phone",
     text: "+91 ••••• ••155",
-    href: undefined,
+    href: "tel:+918073314155",
     icon: "ion:call-outline",
   },
   {

@@ -52,7 +52,7 @@
 
   /* Section base */
   .section-base {
-    @apply py-24 px-4 sm:px-6 lg:px-8 max-w-6xl mx-auto;
+    @apply py-16 sm:py-20 lg:py-24 px-4 sm:px-6 lg:px-8 max-w-6xl mx-auto;
   }
 
   /* Primary button — flat signal-green fill */

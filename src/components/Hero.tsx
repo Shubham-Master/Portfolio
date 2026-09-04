@@ -328,7 +328,7 @@ export default function Hero({ me, socials, nav, experience }: HeroProps) {
               <div
                 ref={outputRef}
                 aria-live="polite"
-                className="relative z-10 max-h-[340px] overflow-y-auto px-4 py-4 font-label text-sm"
+                className="relative z-10 h-[340px] overflow-y-auto px-4 py-4 font-label text-sm"
               >
                 {history.map((line, i) => (
                   <TerminalLine key={i} line={line} />
@@ -336,36 +336,41 @@ export default function Hero({ me, socials, nav, experience }: HeroProps) {
                 {typingLine && <TerminalLine line={typingLine} cursor />}
               </div>
 
-              {bootDone && (
-                <form
-                  onSubmit={handleSubmit}
-                  className="relative z-10 flex items-center gap-2 border-t border-outline px-4 py-3"
+              {/* Always mounted (not conditionally rendered) so the boot
+                  animation finishing doesn't append a new row and shift
+                  everything below — it's just disabled until boot completes. */}
+              <form
+                onSubmit={handleSubmit}
+                aria-hidden={!bootDone}
+                className={`relative z-10 flex items-center gap-2 border-t border-outline px-4 py-3 transition-opacity duration-200 ${
+                  bootDone ? "opacity-100" : "opacity-40"
+                }`}
+              >
+                <label
+                  htmlFor="terminal-input"
+                  className="terminal-glow whitespace-nowrap font-label text-sm text-primary"
                 >
-                  <label
-                    htmlFor="terminal-input"
-                    className="terminal-glow whitespace-nowrap font-label text-sm text-primary"
-                  >
-                    visitor@shubhamkumar:~$
-                  </label>
-                  <input
-                    id="terminal-input"
-                    ref={inputRef}
-                    type="text"
-                    value={input}
-                    onChange={(e) => setInput(e.target.value)}
-                    placeholder="type 'help'"
-                    autoComplete="off"
-                    autoCapitalize="off"
-                    autoCorrect="off"
-                    spellCheck={false}
-                    aria-label="Terminal command input"
-                    className="flex-1 rounded-sm bg-transparent px-1 font-label text-sm text-on-surface outline-none placeholder:text-on-surface-variant/50 focus-visible:ring-2 focus-visible:ring-primary/60"
-                  />
-                  <button type="submit" className="sr-only">
-                    Run command
-                  </button>
-                </form>
-              )}
+                  visitor@shubhamkumar:~$
+                </label>
+                <input
+                  id="terminal-input"
+                  ref={inputRef}
+                  type="text"
+                  value={input}
+                  onChange={(e) => setInput(e.target.value)}
+                  disabled={!bootDone}
+                  placeholder="type 'help'"
+                  autoComplete="off"
+                  autoCapitalize="off"
+                  autoCorrect="off"
+                  spellCheck={false}
+                  aria-label="Terminal command input"
+                  className="flex-1 rounded-sm bg-transparent px-1 font-label text-sm text-on-surface outline-none placeholder:text-on-surface-variant/50 focus-visible:ring-2 focus-visible:ring-primary/60 disabled:cursor-default"
+                />
+                <button type="submit" className="sr-only" disabled={!bootDone}>
+                  Run command
+                </button>
+              </form>
             </div>
 
             {/* CTAs */}
