@@ -32,6 +32,11 @@ const AIRFI_SENIOR_METRICS: Metric[] = [
   { label: "Incident Resolution", from: 0, to: 45, suffix: "%+" },
 ];
 
+const AIRFI_DEVOPS_METRICS: Metric[] = [
+  { label: "Embedded Devices", from: 0, to: 8, suffix: "K+" },
+  { label: "Firmware Release Time Cut", from: 0, to: 40, suffix: "%" },
+];
+
 const INNOITUS_METRICS: Metric[] = [
   { label: "Fewer Incidents", from: 0, to: 35, suffix: "%" },
   { label: "Faster Response", from: 0, to: 30, suffix: "%" },
@@ -46,6 +51,9 @@ function getMetricsFor(exp: Experience): Metric[] | null {
   if (exp.company === "SingleStore") return SINGLESTORE_METRICS;
   if (exp.company === "AirFi Aviation Solutions" && exp.title === "Senior DevOps Engineer") {
     return AIRFI_SENIOR_METRICS;
+  }
+  if (exp.company === "AirFi Aviation Solutions" && exp.title === "DevOps Engineer") {
+    return AIRFI_DEVOPS_METRICS;
   }
   if (exp.company === "Innoitus") return INNOITUS_METRICS;
   if (exp.company === "Extreme Soft Management") return EXTREME_SOFT_METRICS;

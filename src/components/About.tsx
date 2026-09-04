@@ -1,38 +1,13 @@
 import { Icon } from "@iconify/react";
-import type { Me, Contact, Experience } from "@/types";
+import type { Me, Contact } from "@/types";
 import SectionHeader from "./SectionHeader";
 
 interface AboutProps {
   me: Me;
   contacts: Contact[];
-  experience: Experience[];
 }
 
-function getYearsOfExperience(experience: Experience[]): string {
-  const startYears = experience
-    .filter((e) => !e.skip)
-    .map((e) => {
-      const match = e.start.match(/\b(19|20)\d{2}\b/);
-      return match ? Number.parseInt(match[0], 10) : Number.NaN;
-    })
-    .filter((year) => Number.isFinite(year));
-
-  if (startYears.length === 0) {
-    return "7+";
-  }
-
-  const earliest = Math.min(...startYears);
-  const years = new Date().getFullYear() - earliest;
-  return `${years}+`;
-}
-
-export default function About({ me, contacts, experience }: AboutProps) {
-  const STATS = [
-    { value: getYearsOfExperience(experience), label: "Years Experience" },
-    { value: "40%", label: "Fewer Production Outages" },
-    { value: "50%", label: "Faster Releases" },
-    { value: "80+", label: "Hours Saved / Month" },
-  ];
+export default function About({ me, contacts }: AboutProps) {
   return (
     <section id="about" className="section-base">
       <SectionHeader
@@ -40,20 +15,6 @@ export default function About({ me, contacts, experience }: AboutProps) {
         title="The engineer behind the platform work"
         description="Most of my work sits at the intersection of cloud infrastructure, automation, and reliability. I enjoy building systems that make delivery smoother and production less stressful."
       />
-
-      {/* Stats row */}
-      <div className="grid grid-cols-2 sm:grid-cols-4 gap-3 mb-8">
-        {STATS.map((stat) => (
-          <div key={stat.label} className="surface-card p-4 text-center">
-            <p className="font-headline font-bold text-2xl tracking-tighter text-primary">
-              {stat.value}
-            </p>
-            <p className="font-label text-xs text-on-surface-variant mt-1">
-              {stat.label}
-            </p>
-          </div>
-        ))}
-      </div>
 
       <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
         {/* Bio card */}

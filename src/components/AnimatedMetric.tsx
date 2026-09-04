@@ -12,6 +12,7 @@ interface AnimatedMetricProps {
   decimals?: number;
   duration?: number;
   className?: string;
+  onComplete?: () => void;
 }
 
 function easeOutCubic(t: number): number {
@@ -26,17 +27,24 @@ export default function AnimatedMetric({
   decimals = 0,
   duration = 1300,
   className,
+  onComplete,
 }: AnimatedMetricProps) {
   const ref = useRef<HTMLSpanElement>(null);
   const isInView = useInView(ref, { once: true, margin: "-60px" });
   const reduceMotion = usePrefersReducedMotion();
   const [value, setValue] = useState(reduceMotion ? to : from);
+  const onCompleteRef = useRef(onComplete);
+
+  useEffect(() => {
+    onCompleteRef.current = onComplete;
+  }, [onComplete]);
 
   useEffect(() => {
     if (!isInView) return;
 
     if (reduceMotion) {
       setValue(to);
+      onCompleteRef.current?.();
       return;
     }
 
@@ -48,11 +56,15 @@ export default function AnimatedMetric({
       setValue(from + (to - from) * easeOutCubic(progress));
       if (progress < 1) {
         raf = requestAnimationFrame(tick);
+      } else {
+        onCompleteRef.current?.();
       }
     };
 
     raf = requestAnimationFrame(tick);
     return () => cancelAnimationFrame(raf);
+    // onComplete intentionally excluded — read via ref so a new inline
+    // callback identity each render doesn't restart the count-up.
   }, [isInView, reduceMotion, from, to, duration]);
 
   const display = decimals > 0 ? value.toFixed(decimals) : Math.round(value).toString();

@@ -68,7 +68,7 @@ export default async function Home() {
         />
         <SectionDivider />
 
-        <About me={me} contacts={contacts} experience={experience} />
+        <About me={me} contacts={contacts} />
         <SectionDivider />
 
         <ExperienceSection experiences={experience} />
