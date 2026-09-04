@@ -22,9 +22,9 @@ export const me: Me = {
   locationLink: "https://www.google.com/maps/place/Gurugram,+Haryana,+India",
   about: "Cloud Platform Engineer | DevOps, Kubernetes & Automation",
   summary:
-    "Cloud Platform Engineer / Site Reliability Engineer with 7+ years in DevOps and cloud infrastructure fundamentals — Kubernetes, infrastructure as code, multi-cloud operations. I'm now increasingly focused on production AI/LLM platform work: AWS Bedrock with Claude models, RAG pipelines, and AI-assisted incident response, alongside FinOps cost optimization and Zero Trust security.",
+    "Cloud Platform Engineer / Site Reliability Engineer with 7+ years in DevOps and cloud infrastructure fundamentals, from Kubernetes to infrastructure as code to multi-cloud operations. I'm now increasingly focused on production AI/LLM platform work: AWS Bedrock with Claude models, RAG pipelines, and AI-assisted incident response, alongside FinOps cost optimization and Zero Trust security.",
   summaryLong:
-    "I started where most infrastructure careers do: cloud fundamentals. Kubernetes operations, infrastructure as code, CI/CD automation, and multi-cloud reliability work across AWS, Azure, and GCP. That foundation is still how I think about systems — observable, automated, and boring in the best way.\n\nWhat's changed is where I'm pointing that foundation. Over the past year, as a Cloud Platform Engineer, I've been increasingly focused on building and operating production AI tooling on AWS Bedrock with Claude models — including a RAG-based auto-triage agent and an AI-assisted incident RCA tool, both deliberately human-gated rather than fully autonomous. I pair that with FinOps cost governance and Zero Trust identity (Keycloak, OIDC/OAuth2) — the unglamorous platform work that has to be solid before you can trust an AI system to touch production.\n\nThat's the direction I'm building toward: applying DevOps discipline — guardrails, observability, human-in-the-loop review — to systems that increasingly involve LLMs in the operational path.",
+    "I started where most infrastructure careers do: cloud fundamentals. Kubernetes operations, infrastructure as code, CI/CD automation, and multi-cloud reliability work across AWS, Azure, and GCP. That foundation is still how I think about systems. Observable, automated, and boring in the best way.\n\nWhat's changed is where I'm pointing that foundation. Over the past year, as a Cloud Platform Engineer, I've been increasingly focused on building and operating production AI tooling on AWS Bedrock with Claude models, including a RAG-based auto-triage agent and an AI-assisted incident RCA tool, both deliberately human-gated rather than fully autonomous. I pair that with FinOps cost governance and Zero Trust identity (Keycloak, OIDC/OAuth2). It's the unglamorous platform work that has to be solid before you can trust an AI system to touch production.\n\nThat's the direction I'm building toward: applying DevOps discipline (guardrails, observability, human-in-the-loop review) to systems that increasingly involve LLMs in the operational path.",
   avatarUrl: "https://avatars.githubusercontent.com/u/155751376?v=4",
   personalWebsiteUrl: "https://cv.theshubham.in/",
   cta: {
@@ -103,7 +103,7 @@ export const experiences: Experience[] = [
     end: null,
     description: [
       "Designed and built ATLAS, an internal operational-intelligence platform (Airflow, SingleStore, Next.js) used daily by Support, Engineering, and Leadership to track SLA risk and recurring issues.",
-      "Built production AI tooling on AWS Bedrock (Claude 3/3.5) — an AI-assisted incident RCA tool on Grafana MCP and a guardrailed RAG auto-triage agent, both human-gated by design.",
+      "Built production AI tooling on AWS Bedrock (Claude 3/3.5): an AI-assisted incident RCA tool on Grafana MCP and a guardrailed RAG auto-triage agent, both human-gated by design.",
       "Implemented GPU-backed autoscaling on EKS using Karpenter, cutting ML infrastructure cost by 35%+ (utilization ~25% to 65%), measured via Kubecost against real AWS billing.",
       "Own the production Keycloak identity platform (Zero Trust, OIDC/OAuth2) serving ~150 daily internal users.",
       "Contribute Go backend code to an internal multi-cloud cost-governance (FinOps) platform.",
@@ -134,8 +134,8 @@ export const experiences: Experience[] = [
     start: "Oct 2023",
     end: "Jul 2025",
     description: [
-      "Developed and deployed automation across a fleet of 8,000+ embedded IFE (in-flight entertainment) devices — including firmware rollout pipelines that cut release time by 40%, and telemetry-based PMIC monitoring with secure LTE-based diagnostics that reduced MTTR by 35%.",
-      "Built DISCO, an internal Python-based tool for processing onboard infotainment box log data at scale — pulling and parsing logs from AWS S3 for fleet-wide diagnostics.",
+      "Developed and deployed automation across a fleet of 8,000+ embedded IFE (in-flight entertainment) devices. This included firmware rollout pipelines that cut release time by 40%, plus telemetry-based PMIC monitoring with secure LTE-based diagnostics that reduced MTTR by 35%.",
+      "Built DISCO, an internal Python-based tool for processing onboard infotainment box log data at scale, pulling and parsing logs from AWS S3 for fleet-wide diagnostics.",
       "Operated and optimized AWS and Azure Kubernetes environments for production workloads; automated infrastructure changes with Terraform and CI-driven workflows.",
       "Implemented monitoring and alerting improvements that reduced production outages by 40%.",
     ],
@@ -375,13 +375,13 @@ export const services: Service[] = [
     title: "Platform Engineering & Multi-Cloud Architecture",
     icon: "ion:layers-outline",
     description:
-      "Designing secure, scalable cloud platforms across AWS, Azure, and GCP — Kubernetes, infrastructure as code, and CI/CD, with a strong focus on maintainability.",
+      "Designing secure, scalable cloud platforms across AWS, Azure, and GCP using Kubernetes, infrastructure as code, and CI/CD, with a strong focus on maintainability.",
   },
   {
     title: "AI Platform Operations & FinOps",
     icon: "ion:hardware-chip-outline",
     description:
-      "Operating production AI/LLM tooling on AWS Bedrock (Claude models) — RAG pipelines and AI-assisted incident response, human-gated by design — alongside cost governance and FinOps.",
+      "Operating production AI/LLM tooling on AWS Bedrock (Claude models): RAG pipelines and AI-assisted incident response (human-gated by design), alongside cost governance and FinOps.",
   },
   {
     title: "Reliability, Zero Trust & Incident Response",
@@ -396,7 +396,7 @@ export const projects: Project[] = [
     title: "k8s-gitops-platform",
     link: "https://github.com/Shubham-Master/k8s-gitops-platform",
     description:
-      "Production Kubernetes platform on AWS with automated cluster provisioning (Terraform) and GitOps deployments (Argo CD). Full observability stack — Prometheus, Grafana, Loki, and Tempo — for metrics, logs, and traces.",
+      "Production Kubernetes platform on AWS with automated cluster provisioning (Terraform) and GitOps deployments (Argo CD). Full observability stack (Prometheus, Grafana, Loki, and Tempo) for metrics, logs, and traces.",
     stack: ["Kubernetes", "Terraform", "AWS", "Argo CD", "Prometheus", "Grafana", "Loki", "Tempo"],
   },
 ];
