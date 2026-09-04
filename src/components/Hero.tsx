@@ -104,6 +104,53 @@ function TerminalLine({ line, cursor }: { line: Line; cursor?: boolean }) {
   );
 }
 
+function StatCard({
+  tag,
+  to,
+  suffix,
+  label,
+  offset,
+}: {
+  tag: string;
+  to: number;
+  suffix: string;
+  label: string;
+  offset: boolean;
+}) {
+  const reduceMotion = usePrefersReducedMotion();
+  const [loaded, setLoaded] = useState(false);
+
+  return (
+    <div
+      className={`surface-card group relative overflow-hidden px-5 py-5 transition-colors duration-200 hover:border-primary hover:bg-surface-container ${
+        offset ? "md:translate-y-3" : ""
+      }`}
+    >
+      <div className="mb-2 flex items-center gap-1.5">
+        <span className="pulse-dot h-1.5 w-1.5 rounded-full bg-primary/70" aria-hidden="true" />
+        <span className="font-label text-[10px] uppercase tracking-[0.15em] text-on-surface-variant/60">
+          {tag}
+        </span>
+      </div>
+
+      <p className="font-headline text-3xl font-bold tracking-tight text-on-surface">
+        <AnimatedMetric from={0} to={to} suffix={suffix} onComplete={() => setLoaded(true)} />
+      </p>
+
+      <p className="mt-2 font-body text-sm leading-relaxed text-on-surface-variant">{label}</p>
+
+      <span
+        aria-hidden="true"
+        className="absolute inset-x-5 bottom-0 h-px origin-left bg-primary/60"
+        style={{
+          transform: loaded ? "scaleX(1)" : "scaleX(0)",
+          transition: reduceMotion ? "none" : "transform 500ms ease-out",
+        }}
+      />
+    </div>
+  );
+}
+
 export default function Hero({ me, socials, nav, experience }: HeroProps) {
   const reduceMotion = usePrefersReducedMotion();
   const bootLines = useMemo(() => buildBootLines(me), [me]);
@@ -249,10 +296,10 @@ export default function Hero({ me, socials, nav, experience }: HeroProps) {
   }
 
   const stats = [
-    { to: getYearsOfExperience(experience), suffix: "+", label: "Years building in production" },
-    { to: 40, suffix: "%", label: "Fewer production outages" },
-    { to: 50, suffix: "%", label: "Faster release workflows" },
-    { to: 80, suffix: "+", label: "Hours saved each month" },
+    { tag: "TENURE", to: getYearsOfExperience(experience), suffix: "+", label: "Years building in production" },
+    { tag: "UPTIME_IMPACT", to: 40, suffix: "%", label: "Fewer production outages" },
+    { tag: "VELOCITY", to: 50, suffix: "%", label: "Faster release workflows" },
+    { tag: "HOURS_RECLAIMED", to: 80, suffix: "+", label: "Hours saved each month" },
   ];
 
   return (
@@ -392,15 +439,8 @@ export default function Hero({ me, socials, nav, experience }: HeroProps) {
         </div>
 
         <div className="mt-14 grid grid-cols-1 gap-3 md:grid-cols-4">
-          {stats.map((stat) => (
-            <div key={stat.label} className="surface-card px-5 py-5">
-              <p className="font-headline text-3xl font-bold tracking-tight text-on-surface">
-                <AnimatedMetric from={0} to={stat.to} suffix={stat.suffix} />
-              </p>
-              <p className="mt-2 font-body text-sm leading-relaxed text-on-surface-variant">
-                {stat.label}
-              </p>
-            </div>
+          {stats.map((stat, i) => (
+            <StatCard key={stat.label} {...stat} offset={i % 2 === 1} />
           ))}
         </div>
 
