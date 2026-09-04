@@ -26,7 +26,7 @@ export const me: Me = {
   summaryLong:
     "I started where most infrastructure careers do: cloud fundamentals. Kubernetes operations, infrastructure as code, CI/CD automation, and multi-cloud reliability work across AWS, Azure, and GCP. That foundation is still how I think about systems — observable, automated, and boring in the best way.\n\nWhat's changed is where I'm pointing that foundation. Over the past year, as a Cloud Platform Engineer, I've been increasingly focused on building and operating production AI tooling on AWS Bedrock with Claude models — including a RAG-based auto-triage agent and an AI-assisted incident RCA tool, both deliberately human-gated rather than fully autonomous. I pair that with FinOps cost governance and Zero Trust identity (Keycloak, OIDC/OAuth2) — the unglamorous platform work that has to be solid before you can trust an AI system to touch production.\n\nThat's the direction I'm building toward: applying DevOps discipline — guardrails, observability, human-in-the-loop review — to systems that increasingly involve LLMs in the operational path.",
   avatarUrl: "https://avatars.githubusercontent.com/u/155751376?v=4",
-  personalWebsiteUrl: "https://cv-topaz-psi.vercel.app/",
+  personalWebsiteUrl: "https://cv.theshubham.in/",
   cta: {
     message:
       "Open to conversations about AI platform operations, DevOps automation, FinOps, and cloud reliability at scale.",
@@ -36,7 +36,7 @@ export const me: Me = {
 
 export const nav: Nav = {
   cal: BOOK_A_CALL_LINK,
-  resume: "https://cv-topaz-psi.vercel.app/",
+  resume: "https://cv.theshubham.in/",
   footer_note:
     "DevOps-rooted, increasingly focused on AI platform operations.",
 };
@@ -86,7 +86,7 @@ export const contacts: Contact[] = [
   {
     title: "Detailed CV",
     text: "View full career profile",
-    href: "https://cv-topaz-psi.vercel.app/",
+    href: "https://cv.theshubham.in/",
     icon: "ion:document-text-outline",
   },
 ];

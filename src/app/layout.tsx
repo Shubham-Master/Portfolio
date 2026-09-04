@@ -20,7 +20,7 @@ const plexMono = IBM_Plex_Mono({
   display: "swap",
 });
 
-const siteUrl = process.env.NEXT_PUBLIC_SITE_URL || "http://localhost:3000";
+const siteUrl = process.env.NEXT_PUBLIC_SITE_URL || "https://www.theshubham.in";
 
 export const metadata: Metadata = {
   metadataBase: new URL(siteUrl),
