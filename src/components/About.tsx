@@ -16,10 +16,10 @@ export default function About({ me, contacts }: AboutProps) {
         description="Most of my work sits at the intersection of cloud infrastructure, automation, and reliability. I enjoy building systems that make delivery smoother and production less stressful."
       />
 
-      <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
+      <div className="grid grid-cols-1 lg:grid-cols-2 gap-5 sm:gap-6">
         {/* Bio card */}
-        <div className="surface-card p-7">
-          <h3 className="font-headline font-bold text-xl tracking-tighter text-on-surface mb-4">
+        <div className="surface-card p-6 sm:p-7">
+          <h3 className="font-headline font-bold text-xl tracking-tighter text-on-surface mb-3 sm:mb-4">
             {me.about}
           </h3>
           <p className="font-body text-sm leading-[1.8] text-on-surface-variant whitespace-pre-line">
@@ -28,11 +28,11 @@ export default function About({ me, contacts }: AboutProps) {
         </div>
 
         {/* Contact info */}
-        <div className="surface-card p-7">
-          <h4 className="font-headline font-semibold text-sm tracking-tight text-on-surface mb-5">
+        <div className="surface-card p-6 sm:p-7">
+          <h4 className="font-headline font-semibold text-sm tracking-tight text-on-surface mb-4 sm:mb-5">
             Contact Details
           </h4>
-          <div className="flex flex-col gap-4">
+          <div className="flex flex-col gap-3 sm:gap-4">
             {contacts.map((contact) => (
               <div key={contact.title} className="flex items-center gap-3">
                 <div className="flex-shrink-0 w-9 h-9 rounded border border-outline flex items-center justify-center">

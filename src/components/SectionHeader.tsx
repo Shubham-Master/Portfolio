@@ -6,7 +6,7 @@ interface SectionHeaderProps {
 
 export default function SectionHeader({ label, title, description }: SectionHeaderProps) {
   return (
-    <div className="mb-14">
+    <div className="mb-10 sm:mb-12 lg:mb-14">
       {label && (
         <p className="text-primary font-label text-xs font-medium tracking-widest uppercase mb-3">
           {label}
