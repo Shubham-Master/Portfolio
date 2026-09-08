@@ -102,7 +102,7 @@ export const experiences: Experience[] = [
     start: "Feb 2026",
     end: null,
     description: [
-      "Designed and built ATLAS, an internal operational-intelligence platform (Airflow, SingleStore, Next.js) used daily by Support, Engineering, and Leadership to track SLA risk and recurring issues.",
+      "Designed and built ATLAS, an internal operational-intelligence platform that unifies data from Zendesk, Jira, Incident.io, and PagerDuty into a daily Airflow pipeline (SingleStore backend, Next.js dashboard) — used daily by Support, Engineering, and Leadership to track SLA risk and recurring issues.",
       "Built production AI tooling on AWS Bedrock (Claude 3/3.5): an AI-assisted incident RCA tool on Grafana MCP and a guardrailed RAG auto-triage agent, both human-gated by design.",
       "Implemented GPU-backed autoscaling on EKS using Karpenter, cutting ML infrastructure cost by 35%+ (utilization ~25% to 65%), measured via Kubecost against real AWS billing.",
       "Own the production Keycloak identity platform (Zero Trust, OIDC/OAuth2) serving ~150 daily internal users.",
@@ -113,7 +113,7 @@ export const experiences: Experience[] = [
     company: "AirFi Aviation Solutions",
     link: "https://airfi.aero/",
     badges: ["Bengaluru", "Promotion"],
-    title: "Senior DevOps Engineer",
+    title: "Senior Software Engineer",
     location: "Bengaluru, Karnataka, India",
     logo: "/company-logos/airfi.png",
     start: "Aug 2025",
@@ -135,7 +135,8 @@ export const experiences: Experience[] = [
     end: "Jul 2025",
     description: [
       "Developed and deployed automation across a fleet of 8,000+ embedded IFE (in-flight entertainment) devices. This included firmware rollout pipelines that cut release time by 40%, plus telemetry-based PMIC monitoring with secure LTE-based diagnostics that reduced MTTR by 35%.",
-      "Built DISCO, an internal Python-based tool for processing onboard infotainment box log data at scale, pulling and parsing logs from AWS S3 for fleet-wide diagnostics.",
+      "Built DISCO, a fleet inventory and management console for AirFi's 8,000+ onboard IFE devices — tracking live flight/airline assignment per box via FlightRadar integration and content inventory, with remote controls to reassign a box's customer/airline and to trigger firmware updates.",
+      "Built an event-driven serverless log pipeline: a periodic sync job pushed onboard IFE box logs from a Linux server to AWS S3, where an S3 upload event triggered an AWS Lambda function that parsed the logs, extracted structured data for an AI model, and stored results in MongoDB.",
       "Operated and optimized AWS and Azure Kubernetes environments for production workloads; automated infrastructure changes with Terraform and CI-driven workflows.",
       "Implemented monitoring and alerting improvements that reduced production outages by 40%.",
     ],
@@ -178,10 +179,10 @@ export const experiences: Experience[] = [
     location: "Ranchi, Jharkhand, India",
     logo: "/company-logos/extreme-soft.svg",
     start: "Apr 2019",
-    end: "Aug 2021",
+    end: "Sep 2021",
     description: [
       "Operated and maintained production infrastructure on Google Cloud Platform (GCP), introducing automation for repetitive operational tasks.",
-      "Led a year-long GCP-to-AWS migration, modernizing the deployment stack end-to-end.",
+      "Led a production infrastructure migration off Google Cloud Platform, moving customer-facing workloads to AWS over approximately one year.",
       "Automated workflows that saved 80+ engineering hours per month across recurring processes.",
     ],
   },
@@ -396,7 +397,7 @@ export const projects: Project[] = [
     title: "k8s-gitops-platform",
     link: "https://github.com/Shubham-Master/k8s-gitops-platform",
     description:
-      "Production Kubernetes platform on AWS with automated cluster provisioning (Terraform) and GitOps deployments (Argo CD). Full observability stack (Prometheus, Grafana, Loki, and Tempo) for metrics, logs, and traces.",
+      "Production Kubernetes platform on AWS: a 4-module Terraform stack (VPC → IAM → EKS → IRSA) provisioning the cluster, with Helm-deployed services and GitOps deployments via Argo CD. Full observability stack (Prometheus, Grafana, Loki, and Tempo) for metrics, logs, and traces.",
     stack: ["Kubernetes", "Terraform", "AWS", "Argo CD", "Prometheus", "Grafana", "Loki", "Tempo"],
   },
 ];

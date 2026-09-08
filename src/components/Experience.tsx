@@ -49,7 +49,7 @@ const EXTREME_SOFT_METRICS: Metric[] = [
 
 function getMetricsFor(exp: Experience): Metric[] | null {
   if (exp.company === "SingleStore") return SINGLESTORE_METRICS;
-  if (exp.company === "AirFi Aviation Solutions" && exp.title === "Senior DevOps Engineer") {
+  if (exp.company === "AirFi Aviation Solutions" && exp.title === "Senior Software Engineer") {
     return AIRFI_SENIOR_METRICS;
   }
   if (exp.company === "AirFi Aviation Solutions" && exp.title === "DevOps Engineer") {
