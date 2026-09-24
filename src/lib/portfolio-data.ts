@@ -24,7 +24,7 @@ export const me: Me = {
   summary:
     "Cloud Platform Engineer / Site Reliability Engineer with 7+ years in DevOps and cloud infrastructure fundamentals, from Kubernetes to infrastructure as code to multi-cloud operations. I'm now increasingly focused on production AI/LLM platform work: AWS Bedrock with Claude models, RAG pipelines, and AI-assisted incident response, alongside FinOps cost optimization and Zero Trust security.",
   summaryLong:
-    "I started where most infrastructure careers do: cloud fundamentals. Kubernetes operations, infrastructure as code, CI/CD automation, and multi-cloud reliability work across AWS, Azure, and GCP. That foundation is still how I think about systems. Observable, automated, and boring in the best way.\n\nWhat's changed is where I'm pointing that foundation. Over the past year, as a Cloud Platform Engineer, I've been increasingly focused on building and operating production AI tooling on AWS Bedrock with Claude models, including a RAG-based auto-triage agent and an AI-assisted incident RCA tool, both deliberately human-gated rather than fully autonomous. I pair that with FinOps cost governance and Zero Trust identity (Keycloak, OIDC/OAuth2). It's the unglamorous platform work that has to be solid before you can trust an AI system to touch production.\n\nThat's the direction I'm building toward: applying DevOps discipline (guardrails, observability, human-in-the-loop review) to systems that increasingly involve LLMs in the operational path.",
+    "I started where most infrastructure careers do: cloud fundamentals. Kubernetes operations, infrastructure as code, CI/CD automation, and multi-cloud reliability work across AWS, Azure, and GCP. That foundation is still how I think about systems. Observable, automated, and boring in the best way.\n\nWhat's changed is where I'm pointing that foundation. Over the past year, as a Cloud Platform Engineer, I've been increasingly focused on building and operating production AI tooling on AWS Bedrock with Claude models, including a RAG-based auto-triage agent and an AI-assisted incident RCA tool, both deliberately human-gated rather than fully autonomous. I pair that with FinOps cost governance and a production Zero Trust identity platform (Ping Identity, ForgeRock DS/IDM, OIDC/OAuth2) — the stateful, high-blast-radius kind of infrastructure where automation and observability actually matter. It's the unglamorous platform work that has to be solid before you can trust an AI system to touch production.\n\nThat's the direction I'm building toward: applying DevOps discipline (guardrails, observability, human-in-the-loop review) to systems that increasingly involve LLMs in the operational path.",
   avatarUrl: "https://avatars.githubusercontent.com/u/155751376?v=4",
   personalWebsiteUrl: "https://cv.theshubham.in/",
   cta: {
@@ -105,7 +105,7 @@ export const experiences: Experience[] = [
       "Designed and built ATLAS, an internal operational-intelligence platform that unifies data from Zendesk, Jira, Incident.io, and PagerDuty into a daily Airflow pipeline (SingleStore backend, Next.js dashboard) — used daily by Support, Engineering, and Leadership to track SLA risk and recurring issues.",
       "Built production AI tooling on AWS Bedrock (Claude 3/3.5): an AI-assisted incident RCA tool on Grafana MCP and a guardrailed RAG auto-triage agent, both human-gated by design.",
       "Implemented GPU-backed autoscaling on EKS using Karpenter, cutting ML infrastructure cost by 35%+ (utilization ~25% to 65%), measured via Kubecost against real AWS billing.",
-      "Own the production Keycloak identity platform (Zero Trust, OIDC/OAuth2) serving ~150 daily internal users.",
+      "Own the production Zero Trust identity platform (Ping Identity, ForgeRock DS/IDM, OIDC/OAuth2) serving ~150 daily internal users.",
       "Contribute Go backend code to an internal multi-cloud cost-governance (FinOps) platform.",
     ],
   },
@@ -276,7 +276,7 @@ export const skills: Skill[] = [
   {
     href: "/",
     icon: "",
-    skill: "Keycloak / Zero Trust IAM",
+    skill: "Ping Identity / ForgeRock — Zero Trust IAM",
     category: "Specializations",
   },
   {
@@ -388,7 +388,7 @@ export const services: Service[] = [
     title: "Reliability, Zero Trust & Incident Response",
     icon: "ion:pulse-outline",
     description:
-      "Improving uptime and operational readiness through centralized observability and runbooks, backed by Zero Trust identity (Keycloak, OIDC/OAuth2).",
+      "Improving uptime and operational readiness through centralized observability and runbooks, backed by Zero Trust identity (Ping Identity, ForgeRock DS/IDM, OIDC/OAuth2).",
   },
 ];
 

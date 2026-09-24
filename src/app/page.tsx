@@ -60,7 +60,7 @@ export default async function Home() {
             "FinOps",
             "Linux",
             "DevOps",
-            "Zero Trust / Keycloak",
+            "Zero Trust / Ping Identity",
             "Platform Engineering",
             "Automation",
             "Incident Response",
